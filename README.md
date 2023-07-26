@@ -2,30 +2,30 @@
 <br>
 
 </p>
-<h1 align="center">Microsoft  Activation  Scripts (MAS)</h1>
+<h1 align="center">Microsoft激活脚本 （MAS）</h1>
 
-<p align="center">A Windows and Office activator using HWID / KMS38 / Online KMS activation methods, with a focus on open-source code and fewer antivirus detections.</p><br>
+<p align="center">使用HWID / KMS38 /在线KMS激活方法的Windows和Office激活器，专注于开源代码和较少的防病毒检测.</p><br>
 
-## Download / How to use it?
+## 下载/如何使用它？
 
-### Method 1 - PowerShell (Recommended)
+### 方法 1 - PowerShell （推荐）
 
--   On Windows 8.1/10/11, right-click on the Windows start menu and select PowerShell or Terminal (Not CMD).
--   Copy-paste the below code and press enter\
+-   在 Windows 8.1/10/11 上，右键单击 Windows 开始菜单并选择 PowerShell 或终端（非 CMD）.
+-   复制粘贴以下代码，然后按回车键\
     `irm https://massgrave.dev/get | iex`
--   You will see the activation options, and follow onscreen instructions.
--   That's all.
+-   您将看到激活选项，并按照屏幕上的说明进行操作.
+-   就这样.
 
-### Method 2 - Traditional
+### 方法 2 - 传统
 
 -   Download the file from [here](https://github.com/massgravel/Microsoft-Activation-Scripts/archive/refs/heads/master.zip)
--   Right-click on the downloaded zip file and extract
--   In the extracted folder, find the folder named `All-In-One-Version`
--   Run the file named `MAS_AIO.cmd`
--   You will see the activation options, and follow onscreen instructions.
--   That's all.
+-   右键单击下载的zip文件并解压缩
+-   在解压缩的文件夹中，找到名为 `All-In-One-Version`
+-   运行名为 `MAS_AIO.cmd`
+-   您将看到激活选项，并按照屏幕上的说明进行操作.
+-   就这样.
 
-To run the scripts in unattended mode, check [here](https://massgrave.dev/command_line_switches.html)
+要在无人参与模式下运行脚本，请查看此处 [here](https://massgrave.dev/command_line_switches.html)
 
 ```
 Latest Version: 1.8
