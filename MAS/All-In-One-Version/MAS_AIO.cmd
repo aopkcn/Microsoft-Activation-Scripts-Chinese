@@ -54,7 +54,7 @@ pushd "%~dp0"
 >nul findstr /rxc:".*" "%~nx0"
 if not %errorlevel%==0 (
 echo:
-echo Error: Script either has LF line ending issue, or it failed to read itself.
+echo 错误：脚本存在 LF 行结束问题，或者无法读取自身.
 echo:
 popd
 ping 127.0.0.1 -n 6 > nul
@@ -66,7 +66,7 @@ popd
 
 cls
 color 07
-title  Microsoft_Activation_Scripts
+title  微软激活脚本
 
 set _args=
 set _elev=
@@ -95,22 +95,22 @@ if %winbuild% GEQ 10586 reg query "HKCU\Console" /v ForceV2 2>nul | find /i "0x0
 
 call :_colorprep
 
-set "nceline=echo: &echo ==== ERROR ==== &echo:"
-set "eline=echo: &call :_color %Red% "==== ERROR ====" &echo:"
+set "nceline=echo: &echo ==== 错误 ==== &echo:"
+set "eline=echo: &call :_color %Red% "==== 错误 ====" &echo:"
 
 ::========================================================================================================================================
 
 if %winbuild% LSS 7600 (
 %nceline%
-echo Unsupported OS version detected.
-echo Project is supported only for Windows 7/8/8.1/10/11 and their Server equivalent.
+echo 检测到不支持的操作系统版本.
+echo 项目仅支持 Windows 7/8/8.1/10/11 及其对应的服务器版本.
 goto MASend
 )
 
 for %%# in (powershell.exe) do @if "%%~$PATH:#"=="" (
 %nceline%
-echo Unable to find powershell.exe in the system.
-echo Aborting...
+echo 系统中找不到powershell.exe.
+echo 正在中止...
 goto MASend
 )
 
@@ -135,10 +135,10 @@ setlocal EnableDelayedExpansion
 echo "!_batf!" | find /i "!_ttemp!" 1>nul && (
 if /i not "!_work!"=="!_ttemp!" (
 %nceline%
-echo Script is launched from the temp folder,
-echo Most likely you are running the script directly from the archive file.
+echo 脚本从临时文件夹启动，
+echo 很可能是直接从压缩包中运行脚本.
 echo:
-echo Extract the archive file and launch the script from the extracted folder.
+echo 提取压缩包中的脚本文件到文件夹再启动脚本.
 goto MASend
 )
 )
@@ -150,8 +150,8 @@ goto MASend
 >nul fltmc || (
 if not defined _elev %nul% %psc% "start cmd.exe -arg '/c \"!_PSarg:'=''!\"' -verb runas" && exit /b
 %nceline%
-echo This script require administrator privileges.
-echo To do so, right click on this script and select 'Run as administrator'.
+echo 该脚本需要管理员权限.
+echo 为此，请右键单击该脚本并选择'以管理员身份运行'.
 goto MASend
 )
 
@@ -190,7 +190,7 @@ setlocal EnableDelayedExpansion
 
 cls
 color 07
-title  Microsoft_Activation_Scripts 1.8
+title  微软激活脚本1.8-资源工坊https://www.aopk.cn
 mode 76, 30
 set "mastemp=%SystemRoot%\Temp\__MAS"
 if exist "%mastemp%\.*" rmdir /s /q "%mastemp%\" %nul%
@@ -199,24 +199,24 @@ echo:
 echo:
 echo:
 echo:
-echo:
+echo:                   Microsoft Activation Scripts-中文版
 echo:       ______________________________________________________________
 echo:
-echo:                 Activation Methods:
+echo:             激活方法:
 echo:
-echo:             [1] HWID        ^|  Windows           ^|   Permanent
-echo:             [2] KMS38       ^|  Windows           ^|   2038 Year
-echo:             [3] Online KMS  ^|  Windows / Office  ^|    180 Days
+echo:             [1] HWID数字激活 ^|  Windows           ^|      永久
+echo:             [2] KMS38激活    ^|  Windows           ^|至-2038 年
+echo:             [3] 在线KMS激活  ^|  Windows/Office    ^|    180 天
 echo:             __________________________________________________      
 echo:
-echo:             [4] Activation Status
-echo:             [5] Troubleshoot
-echo:             [6] Extras
-echo:             [7] Help
-echo:             [0] Exit
+echo:             [4] 激活状态
+echo:             [5] 故障排除
+echo:             [6] 附加功能
+echo:             [7] 帮助
+echo:             [0] 退出
 echo:       ______________________________________________________________
 echo:
-call :_color2 %_White% "          " %_Green% "Enter a menu option in the Keyboard [1,2,3,4,5,6,7,0] :"
+call :_color2 %_White% "          " %_Green% "在键盘上输入菜单选项 [1,2,3,4,5,6,7,0] :"
 choice /C:12345670 /N
 set _erl=%errorlevel%
 
@@ -235,7 +235,7 @@ goto :MainMenu
 :Extras
 
 cls
-title  Extras
+title  附加功能
 mode 76, 30
 echo:
 echo:
@@ -245,17 +245,17 @@ echo:
 echo:
 echo:       ______________________________________________________________
 echo:
-echo:             [1] Change Windows Edition
+echo:             [1] 更改Windows版本
 echo:
-echo:             [2] Extract $OEM$ Folder
-echo:             [3] Insert Windows HWID Key
-echo:             [4] Activation Status [vbs]
+echo:             [2] 提取$OEM$文件夹
+echo:             [3] 输入Windows HWID密钥
+echo:             [4] 激活状态[vbs]
 echo:             __________________________________________________      
 echo:                                                                     
-echo:             [0] Go to Main Menu
+echo:             [0] 返回主菜单
 echo:       ______________________________________________________________
 echo:
-call :_color2 %_White% "           " %_Green% "Enter a menu option in the Keyboard [1,2,3,4,0] :"
+call :_color2 %_White% "           " %_Green% "在键盘上输入菜单选项 [1,2,3,4,0] :"
 choice /C:12340 /N
 set _erl=%errorlevel%
 
@@ -271,25 +271,25 @@ goto :Extras
 :Extract$OEM$
 
 cls
-title  Extract $OEM$ Folder
+title  提取OEM文件夹
 mode 76, 30
 
 if not exist "!_desktop_!\" (
 %eline%
-echo Desktop location was not detected, aborting...
+echo 未检测到桌面位置，正在中止...
 echo _____________________________________________________
 echo:
-call :_color %_Yellow% "Press any key to go back..."
+call :_color %_Yellow% "按任意键返回..."
 pause >nul
 goto Extras
 )
 
 if exist "!_desktop_!\$OEM$\" (
 %eline%
-echo $OEM$ folder already exists on the Desktop.
+echo 桌面上已存在 $OEM$ 文件夹.
 echo _____________________________________________________
 echo:
-call :_color %_Yellow% "Press any key to go back..."
+call :_color %_Yellow% "按任意键返回..."
 pause >nul
 goto Extras
 )
@@ -297,7 +297,7 @@ goto Extras
 :Extract$OEM$2
 
 cls
-title  Extract $OEM$ Folder
+title  提取OEM文件夹
 mode 76, 30
 
 echo:
@@ -305,28 +305,28 @@ echo:
 echo:
 echo:
 echo:
-echo:                    Extract $OEM$ folder on the desktop             
+echo:                    提取OEM文件夹到桌面             
 echo:       ______________________________________________________________
 echo:                                                            
 echo:             [1] HWID
 echo:             [2] KMS38
-echo:             [3] Online KMS
+echo:             [3] 在线 KMS
 echo:             
-echo:             [4] HWID  ^(Windows^) ^+ Online KMS ^(Office^)
-echo:             [5] KMS38 ^(Windows^) ^+ Online KMS ^(Office^)
+echo:             [4] HWID  ^(Windows^) ^+ 在线 KMS ^(Office^)
+echo:             [5] KMS38 ^(Windows^) ^+ 在线 KMS ^(Office^)
 echo:             __________________________________________________      
 echo:                                                                   
-echo:             [0] Go Back
+echo:             [0] 返回
 echo:       ______________________________________________________________
 echo:  
-call :_color2 %_White% "           " %_Green% "Enter a menu option in the Keyboard:"
+call :_color2 %_White% "           " %_Green% "在键盘上输入菜单选项:"
 choice /C:123450 /N
 set _erl=%errorlevel%
 
 if %_erl%==6 goto:Extras
-if %_erl%==5 (set "_oem=KMS38 [Windows] + Online KMS [Office]" & set "para=/KMS38 /KMS-ActAndRenewalTask /KMS-Office" &goto:Extract$OEM$3)
-if %_erl%==4 (set "_oem=HWID [Windows] + Online KMS [Office]" & set "para=/HWID /KMS-ActAndRenewalTask /KMS-Office" &goto:Extract$OEM$3)
-if %_erl%==3 (set "_oem=Online KMS" & set "para=/KMS-ActAndRenewalTask /KMS-WindowsOffice" &goto:Extract$OEM$3)
+if %_erl%==5 (set "_oem=KMS38 [Windows] + 在线 KMS [Office]" & set "para=/KMS38 /KMS-ActAndRenewalTask /KMS-Office" &goto:Extract$OEM$3)
+if %_erl%==4 (set "_oem=HWID [Windows] + 在线 KMS [Office]" & set "para=/HWID /KMS-ActAndRenewalTask /KMS-Office" &goto:Extract$OEM$3)
+if %_erl%==3 (set "_oem=在线 KMS" & set "para=/KMS-ActAndRenewalTask /KMS-WindowsOffice" &goto:Extract$OEM$3)
 if %_erl%==2 (set "_oem=KMS38" & set "para=/KMS38" &goto:Extract$OEM$3)
 if %_erl%==1 (set "_oem=HWID" & set "para=/HWID" &goto:Extract$OEM$3)
 goto :Extract$OEM$2
@@ -354,20 +354,20 @@ if not exist "!_dir!\SetupComplete.cmd" set _error=1
 
 if defined _error (
 %eline%
-echo Failed to extract $OEM$ folder on the Desktop.
+echo 提取 $OEM$ 文件到桌面失败.
 ) else (
 echo:
 call :_color %Magenta% "%_oem%"
-call :_color %Green% "$OEM$ folder is successfully created on the Desktop."
+call :_color %Green% "OEM文件夹在桌面创建成功."
 )
 echo "%_oem%" | find /i "KMS38" 1>nul && (
 echo:
-echo To KMS38 activate Server Cor/Acor editions ^(No GUI Versions^),
-echo Check this page https://massgrave.dev/oem-folder
+echo 要 KMS38 激活服务器 Cor/Acor 版本 ^(无GUI版本^),
+echo 检查此页面 https://massgrave.dev/oem-folder
 )
 echo ___________________________________________________________________
 echo:
-call :_color %_Yellow% "Press any key to go back..."
+call :_color %_Yellow% "按任意键返回..."
 pause >nul
 goto Extras
 
@@ -391,7 +391,7 @@ set _NoEditionChange=0
 
 cls
 color 07
-title  HWID Activation
+title  HWID数字激活
 
 set _args=
 set _elev=
@@ -439,24 +439,24 @@ set  "_Green="Black" "Green""
 set "_Yellow="Black" "Yellow""
 )
 
-set "nceline=echo: &echo ==== ERROR ==== &echo:"
-set "eline=echo: &call :dk_color %Red% "==== ERROR ====" &echo:"
-if %~z0 GEQ 200000 (set "_exitmsg=Go back") else (set "_exitmsg=Exit")
+set "nceline=echo: &echo ==== 错误 ==== &echo:"
+set "eline=echo: &call :dk_color %Red% "==== 错误 ====" &echo:"
+if %~z0 GEQ 200000 (set "_exitmsg=返回") else (set "_exitmsg=退出")
 
 ::========================================================================================================================================
 
 if %winbuild% LSS 10240 (
 %eline%
-echo Unsupported OS version detected.
-echo HWID Activation is supported only for Windows 10/11.
-echo Use Online KMS Activation option.
+echo 检测到不支持的操作系统版本.
+echo 仅Windows 10/11 支持HWID激活.
+echo 使用在线KMS激活选项.
 goto dk_done
 )
 
 if exist "%SystemRoot%\Servicing\Packages\Microsoft-Windows-Server*Edition~*.mum" (
 %eline%
-echo HWID Activation is not supported for Windows Server.
-echo Use KMS38 or Online KMS Activation option.
+echo Windows Server 不支持HWID激活.
+echo 使用KMS38或在线KMS激活选项.
 goto dk_done
 )
 
@@ -480,10 +480,10 @@ setlocal EnableDelayedExpansion
 
 cls
 mode 102, 34
-title  HWID Activation
+title  HWID数字激活
 
 echo:
-echo Initializing...
+echo 正在初始化...
 call :dk_product
 call :dk_ckeckwmic
 
@@ -492,8 +492,8 @@ call :dk_ckeckwmic
 sc start sppsvc %nul%
 if %errorlevel% NEQ 1056 if %errorlevel% NEQ 0 (
 echo:
-echo Error code: %errorlevel%
-call :dk_color %Red% "Failed to start [sppsvc] service, rest of the process may take a long time..."
+echo 错误代码: %errorlevel%
+call :dk_color %Red% "无法启动[sppsvc]服务，其余进程可能需要很长时间..."
 echo:
 )
 
@@ -506,12 +506,12 @@ if defined _perm (
 cls
 echo ___________________________________________________________________________________________
 echo:
-call :dk_color2 %_White% "     " %Green% "Checking: %winos% is Permanently Activated."
-call :dk_color2 %_White% "     " %Gray% "Activation is not required."
+call :dk_color2 %_White% "     " %Green% "检查: %winos% 已永久激活."
+call :dk_color2 %_White% "     " %Gray% "不需要激活."
 echo ___________________________________________________________________________________________
 if %_unattended%==1 goto dk_done
 echo:
-choice /C:10 /N /M ">    [1] Activate [0] %_exitmsg% : "
+choice /C:10 /N /M ">    [1] 激活 [0] %_exitmsg% : "
 if errorlevel 2 exit /b
 )
 cls
@@ -525,10 +525,10 @@ reg query "HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion" /v EditionID 2>nul
 %eline%
 echo [%winos% ^| %winbuild%]
 echo:
-echo Evaluation Editions cannot be activated. 
-echo You need to install full version of %winos%
+echo 评估版无法激活. 
+echo 您需要安装完整版 %winos%
 echo:
-echo Download it from here,
+echo 从这里下载,
 echo https://massgrave.dev/genuine-installation-media.html
 goto dk_done
 )
@@ -551,7 +551,7 @@ if not defined osSKU set osSKU=%regSKU%
 
 if not defined osSKU (
 %eline%
-echo SKU value was not detected properly. Aborting...
+echo 未正确检测到SKU值.正在中止...
 goto dk_done
 )
 
@@ -562,7 +562,7 @@ set error=
 cls
 echo:
 for /f "skip=2 tokens=2*" %%a in ('reg query "HKLM\SYSTEM\CurrentControlSet\Control\Session Manager\Environment" /v PROCESSOR_ARCHITECTURE') do set arch=%%b
-echo Checking OS Info                        [%winos% ^| %winbuild% ^| %arch%]
+echo 检查操作系统信息                        [%winos% ^| %winbuild% ^| %arch%]
 
 ::  Check Internet connection
 
@@ -577,10 +577,10 @@ if !errorlevel!==0 set _int=1
 )
 
 if defined _int (
-echo Checking Internet Connection            [Connected]
+echo 检查互联网连接            [已连接]
 ) else (
 set error=1
-call :dk_color %Red% "Checking Internet Connection            [Not Connected]"
+call :dk_color %Red% "检查互联网连接            [未连接]"
 )
 
 ::========================================================================================================================================
@@ -595,12 +595,12 @@ if %_WSH% EQU 0 (
 reg add "HKLM\Software\Microsoft\Windows Script Host\Settings" /v Enabled /t REG_DWORD /d 1 /f %nul%
 reg add "HKCU\Software\Microsoft\Windows Script Host\Settings" /v Enabled /t REG_DWORD /d 1 /f %nul%
 if not "%arch%"=="x86" reg add "HKLM\Software\Microsoft\Windows Script Host\Settings" /v Enabled /t REG_DWORD /d 1 /f /reg:32 %nul%
-echo Enabling Windows Script Host            [Successful]
+echo 启用Windows脚本主机            [成功]
 )
 
 ::========================================================================================================================================
 
-echo Initiating Diagnostic Tests...
+echo 启动诊断测试...
 
 set "_serv=ClipSVC wlidsvc sppsvc KeyIso LicenseManager Winmgmt wuauserv"
 
@@ -628,14 +628,14 @@ reg query HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\WindowsUpdateSysprepInP
 reg query HKLM\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate /s 2>nul | findstr /i "NoAutoUpdate DisableWindowsUpdateAccess" %nul% && set updatesblock=1
 
 if defined updatesblock (
-call :dk_color %Gray% "Checking Windows Update Blockers        [Found]"
+call :dk_color %Gray% "检查Windows更新拦截器        [找到]"
 if defined applist echo: %serv_e% | find /i "wuauserv" %nul% && (
-call :dk_color %Magenta% "Windows Update Service [wuauserv] is not working. Enable it incase if you have disabled it."
+call :dk_color %Magenta% "Windows更新服务[wuauserv]无法工作.如果您已禁用它，请启用它."
 )
 )
 
 reg query "HKLM\SOFTWARE\Policies\Microsoft\WindowsStore" /v DisableStoreApps 2>nul | find /i "0x1" %nul% && (
-call :dk_color %Gray% "Checking Store App Blocker              [Found]"
+call :dk_color %Gray% "检查商店应用程序拦截器        [找到]"
 )
 
 ::========================================================================================================================================
@@ -661,18 +661,18 @@ if not defined key call :hwidfallback
 if defined altkey (set key=%altkey%&set changekey=1&set notworking=)
 
 if defined notworking if defined notfoundaltactID (
-call :dk_color %Red% "Checking Alternate Edition For HWID     [%altedition% Activation ID Not Found]"
+call :dk_color %Red% "检查HWID的备用版本     [%altedition% 未找到激活ID]"
 if exist "%SystemRoot%\Servicing\Packages\Microsoft-Windows-*EvalEdition~*.mum" (
-call :dk_color %Magenta% "Evaluation Windows Found. Install Full version of %winos%"
-call :dk_color %Magenta% "Download it from https://massgrave.dev/genuine-installation-media.html"
+call :dk_color %Magenta% "发现评估版,请安装完整版本 %winos%"
+call :dk_color %Magenta% "从以下地址下载 https://massgrave.dev/genuine-installation-media.html"
 )
 )
 
 if not defined key (
 %eline%
 echo [%winos% ^| %winbuild% ^| SKU:%osSKU%]
-echo Unable to find this product in the supported product list.
-echo Make sure you are using updated version of the script.
+echo 在支持的产品列表中找不到该产品.
+echo 确保您使用的是脚本的更新版本.
 echo https://massgrave.dev
 echo:
 goto dk_done
@@ -686,7 +686,7 @@ if defined notworking set error=1
 
 echo:
 if defined changekey (
-call :dk_color %Magenta% "[%altedition%] Edition product key will be used to enable HWID activation."
+call :dk_color %Magenta% "[%altedition%] 版本产品密钥将用于启用HWID激活."
 echo:
 )
 
@@ -699,12 +699,12 @@ if %errorcode% NEQ 0 set "errorcode=[0x%=ExitCode%]"
 
 if %errorcode% EQU 0 (
 call :dk_refresh
-echo Installing Generic Product Key          [%key%] [Successful]
+echo 安装通用产品密钥          [%key%] [成功]
 ) else (
-call :dk_color %Red% "Installing Generic Product Key          [%key%] [Failed] %errorcode%"
+call :dk_color %Red% "安装通用产品密钥          [%key%] [失败] %errorcode%"
 if not defined error (
-call :dk_color %Magenta% "In MAS, Goto Troubleshoot and run Fix Licensing option."
-if defined actidnotfound call :dk_color %Red% "Activation ID not found for this key. Make sure you are using updated version of MAS."
+call :dk_color %Magenta% "在MAS中，转至故障排除并运行修复许可选项."
+if defined actidnotfound call :dk_color %Red% "找不到该密钥的激活ID.确保您使用的是MAS的最新版本."
 set showfix=1
 )
 set error=1
@@ -722,9 +722,9 @@ if not "%name%"=="US" (
 set regionchange=1
 %psc% "Set-WinHomeLocation -GeoId 244" %nul%
 if !errorlevel! EQU 0 (
-echo Changing Windows Region To USA          [Successful]
+echo 将Windows区域更改为美国          [成功]
 ) else (
-call :dk_color %Red% "Changing Windows Region To USA          [Failed]"
+call :dk_color %Red% "将Windows区域更改为美国          [失败]"
 )
 )
 
@@ -746,12 +746,12 @@ call :hwiddata ticket
 copy /y /b "%tdir%\GenuineTicket" "%tdir%\GenuineTicket.xml" %nul%
 
 if not exist "%tdir%\GenuineTicket.xml" (
-call :dk_color %Red% "Generating GenuineTicket.xml            [Failed]"
+call :dk_color %Red% "生成 GenuineTicket.xml            [失败]"
 echo [%encoded%]
 if exist "%tdir%\Genuine*" del /f /q "%tdir%\Genuine*" %nul%
 goto :dl_final
 ) else (
-echo Generating GenuineTicket.xml            [Successful]
+echo 生成 GenuineTicket.xml            [成功]
 )
 
 set "_xmlexist=if exist "%tdir%\GenuineTicket.xml""
@@ -765,7 +765,7 @@ net start ClipSVC /y %nul%
 %_xmlexist% (
 set error=1
 if exist "%tdir%\*.xml" del /f /q "%tdir%\*.xml" %nul%
-call :dk_color %Red% "Installing GenuineTicket.xml            [Failed With ClipSVC Service Restart, Wait...]"
+call :dk_color %Red% "安装 GenuineTicket.xml            [ClipSVC服务重新启动失败，请稍等...]"
 )
 )
 
@@ -777,18 +777,18 @@ set rebuildinfo=
 %_xmlexist% (
 set error=1
 set rebuildinfo=1
-call :dk_color %Red% "Installing GenuineTicket.xml            [Failed With clipup -v -o]"
+call :dk_color %Red% "安装 GenuineTicket.xml            [失败 With clipup -v -o]"
 )
 
 if exist "%ProgramData%\Microsoft\Windows\ClipSVC\Install\Migration\*.xml" (
 set error=1
 set rebuildinfo=1
-call :dk_color %Red% "Checking Ticket Migration               [Failed]"
+call :dk_color %Red% "正在检查票证迁移              [失败]"
 )
 
 if defined applist if not defined showfix if defined rebuildinfo (
 set showfix=1
-call :dk_color %Magenta% "In MAS, Goto Troubleshoot and run Fix Licensing option."
+call :dk_color %Magenta% "在MAS中，转至故障排除并运行修复许可选项."
 )
 
 if exist "%tdir%\Genuine*" del /f /q "%tdir%\Genuine*" %nul%
@@ -798,13 +798,13 @@ if exist "%tdir%\Genuine*" del /f /q "%tdir%\Genuine*" %nul%
 call :dk_product
 
 echo:
-echo Activating...
+echo 正在激活...
 
 call :dk_act
 call :dk_checkperm
 if defined _perm (
 echo:
-call :dk_color %Green% "%winos% is permanently activated with a digital license."
+call :dk_color %Green% "%winos% 使用数字许可证永久激活."
 goto :dl_final
 )
 
@@ -834,8 +834,8 @@ if not defined resfail (
 if defined resfail (
 set error=1
 echo:
-call :dk_color %Red% "Checking Licensing Servers              [Failed To Connect]"
-call :dk_color2 %Magenta% "Check this page for help" %_Yellow% " https://massgrave.dev/licensing-servers-issue"
+call :dk_color %Red% "检查授权服务器              [连接失败]"
+call :dk_color2 %Magenta% "检查此页面寻求帮助" %_Yellow% " https://massgrave.dev/licensing-servers-issue"
 )
 )
 
@@ -846,9 +846,9 @@ echo:
 set "_ident=HKU\S-1-5-19\SOFTWARE\Microsoft\IdentityCRL"
 reg delete "!_ident!" /f %nul%
 reg query "!_ident!" %nul% && (
-call :dk_color %Red% "Deleting a Registry                     [Failed] [!_ident!]"
+call :dk_color %Red% "删除注册表                     [失败] [!_ident!]"
 ) || (
-echo Deleting a Registry                     [Successful] [!_ident!]
+echo 删除注册表                     [成功] [!_ident!]
 )
 
 REM Refresh some services and license status
@@ -861,15 +861,15 @@ call :dk_checkperm
 
 echo:
 if defined _perm (
-call :dk_color %Green% "%winos% is permanently activated with a digital license."
+call :dk_color %Green% "%winos% 使用数字许可证永久激活."
 ) else (
-call :dk_color %Red% "Activation Failed %error_code%"
+call :dk_color %Red% "激活失败 %error_code%"
 if defined notworking (
-call :dk_color %Magenta% "At the time of writing this, HWID Activation was not supported for this product."
-call :dk_color %Magenta% "Use KMS38 Activation option."
+call :dk_color %Magenta% "在编写本脚本时，此产品不支持HWID激活."
+call :dk_color %Magenta% "使用KMS38激活选项."
 ) else (
-if not defined error call :dk_color %Magenta% "In MAS, Goto Troubleshoot and run Fix Licensing option."
-call :dk_color2 %Magenta% "Check this page for help" %_Yellow% " https://massgrave.dev/troubleshoot"
+if not defined error call :dk_color %Magenta% "在MAS中，转至故障排除并运行修复许可选项."
+call :dk_color2 %Magenta% "查看此页面以获取帮助" %_Yellow% " https://massgrave.dev/troubleshoot"
 )
 )
 
@@ -882,13 +882,13 @@ echo:
 if defined regionchange (
 %psc% "Set-WinHomeLocation -GeoId %nation%" %nul%
 if !errorlevel! EQU 0 (
-echo Restoring Windows Region                [Successful]
+echo 恢复Windows区域                [成功]
 ) else (
-call :dk_color %Red% "Restoring Windows Region                [Failed] [%name% - %nation%]"
+call :dk_color %Red% "恢复Windows区域                [失败] [%name% - %nation%]"
 )
 )
 
-if %osSKU%==175 call :dk_color %Red% "%winos% does not support activation on non-azure platforms."
+if %osSKU%==175 call :dk_color %Red% "%winos% 不支持在非azure平台上激活."
 
 goto :dk_done
 
@@ -920,7 +920,7 @@ if %_wmic% EQU 0 %psc% "(([WMISEARCHER]'SELECT ID FROM SoftwareLicensingProduct 
 if not %errorlevel%==0 cscript //nologo %windir%\system32\slmgr.vbs /ato %nul%
 set error_code=%errorlevel%
 cmd /c exit /b %error_code%
-if %error_code% NEQ 0 (set "error_code=[Error Code: 0x%=ExitCode%]") else (set error_code=)
+if %error_code% NEQ 0 (set "error_code=[错误代码: 0x%=ExitCode%]") else (set error_code=)
 exit /b
 
 ::  Get Windows Activation IDs
@@ -1010,11 +1010,11 @@ if defined serv_cste (set "serv_cste=!serv_cste! %%#") else (set "serv_cste=%%#"
 )
 )
 
-if defined serv_csts call :dk_color %Gray% "Enabling Disabled Services              [Successful] [%serv_csts%]"
+if defined serv_csts call :dk_color %Gray% "Enabling Disabled Services              [成功] [%serv_csts%]"
 
 if defined serv_cste (
 set error=1
-call :dk_color %Red% "Enabling Disabled Services              [Failed] [%serv_cste%]"
+call :dk_color %Red% "Enabling Disabled Services              [失败] [%serv_cste%]"
 )
 
 ::========================================================================================================================================
@@ -1037,7 +1037,7 @@ if defined checkerror if defined serv_e (set "serv_e=!serv_e!, %%#-!errorcode!")
 
 if defined serv_e (
 set error=1
-call :dk_color %Red% "Starting Services                       [Failed] [%serv_e%]"
+call :dk_color %Red% "Starting Services                       [失败] [%serv_e%]"
 echo %serv_e% | findstr /i "ClipSVC-1058 sppsvc-1058" %nul% && (
 call :dk_color %Magenta% "Restart the system to fix disabled service error 1058."
 )
@@ -1410,7 +1410,7 @@ set _NoEditionChange=0
 
 cls
 color 07
-title  KMS38 Activation
+title  KMS38激活
 
 set _args=
 set _elev=
@@ -1460,17 +1460,17 @@ set "_Yellow="Black" "Yellow""
 )
 
 set _k38=
-set "nceline=echo: &echo ==== ERROR ==== &echo:"
-set "eline=echo: &call :dk_color %Red% "==== ERROR ====" &echo:"
-if %~z0 GEQ 200000 (set "_exitmsg=Go back") else (set "_exitmsg=Exit")
+set "nceline=echo: &echo ==== 错误 ==== &echo:"
+set "eline=echo: &call :dk_color %Red% "==== 错误 ====" &echo:"
+if %~z0 GEQ 200000 (set "_exitmsg=返回") else (set "_exitmsg=退出")
 set "specific_kms=SOFTWARE\Microsoft\Windows NT\CurrentVersion\SoftwareProtectionPlatform\55c92734-d682-4d71-983e-d6ec3f16059f"
 
 ::========================================================================================================================================
 
 if %winbuild% LSS 14393 (
 %eline%
-echo Unsupported OS version detected.
-echo KMS38 Activation is supported for Windows 10/11/Server, build 14393 and later.
+echo 检测到不支持的操作系统版本.
+echo Windows 10/11/Server、内部版本14393及更高版本支持KMS38激活.
 goto dk_done
 )
 
@@ -1499,7 +1499,7 @@ if %_rem%==1 goto :k_uninstall
 if %_unattended%==0 (
 cls
 mode 76, 25
-title  KMS38 Activation
+title  KMS38激活
 
 echo:
 echo:
@@ -1507,15 +1507,15 @@ echo:
 echo:
 echo         ____________________________________________________________
 echo:
-echo                 [1] KMS38 Activation
+echo                 [1] KMS38 激活
 echo                 ____________________________________________
 echo:
-echo                 [2] Remove KM38 Protection
+echo                 [2] 移除KM38激活
 echo:
 echo                 [0] %_exitmsg%
 echo         ____________________________________________________________
 echo: 
-call :dk_color2 %_White% "              " %_Green% "Enter a menu option in the Keyboard [1,2,0]"
+call :dk_color2 %_White% "              " %_Green% "在键盘上输入菜单选项 [1,2,0]"
 choice /C:120 /N
 set _el=!errorlevel!
 if !_el!==3  exit /b
@@ -1530,10 +1530,10 @@ goto :k_menu
 
 cls
 mode 102, 33
-title  KMS38 Activation
+title  KMS38激活
 
 echo:
-echo Initializing...
+echo 正在初始化...
 call :dk_product
 call :dk_ckeckwmic
 
@@ -1542,8 +1542,8 @@ call :dk_ckeckwmic
 sc start sppsvc %nul%
 if %errorlevel% NEQ 1056 if %errorlevel% NEQ 0 (
 echo:
-echo Error code: %errorlevel%
-call :dk_color %Red% "Failed to start [sppsvc] service, rest of the process may take a long time..."
+echo 错误代码: %errorlevel%
+call :dk_color %Red% "无法启动 [sppsvc] 服务，其余进程可能需要很长时间..."
 echo:
 )
 
@@ -1556,12 +1556,12 @@ if defined _perm (
 cls
 echo ___________________________________________________________________________________________
 echo:
-call :dk_color2 %_White% "     " %Green% "Checking: %winos% is Permanently Activated."
-call :dk_color2 %_White% "     " %Gray% "Activation is not required."
+call :dk_color2 %_White% "     " %Green% "正在检查: %winos% 已永久激活."
+call :dk_color2 %_White% "     " %Gray% "不需要激活."
 echo ___________________________________________________________________________________________
 if %_unattended%==1 goto dk_done
 echo:
-choice /C:10 /N /M ">    [1] Activate [0] %_exitmsg% : "
+choice /C:10 /N /M ">    [1] 激活 [0] %_exitmsg% : "
 if errorlevel 2 exit /b
 )
 cls
@@ -1582,14 +1582,14 @@ reg query "HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion" /v EditionID 2>nul
 %eline%
 echo [%winos% ^| %winbuild%]
 if defined _evalserv (
-echo Server Evaluation cannot be activated. Convert it to full Server OS.
+echo 无法激活服务器评估版本,将其转换为完整的服务器操作系统.
 echo:
-echo In MAS, goto Extras and use 'Change Edition' option.
+echo 在MAS中，转到“附加功能”并使用“更改Windows版本”选项.
 ) else (
-echo Evaluation Editions cannot be activated. 
-echo You need to install full version of %winos%
+echo 评估版无法激活. 
+echo 您需要安装完整版 %winos%
 echo:
-echo Download it from here,
+echo 从这里下载,
 echo https://massgrave.dev/genuine-installation-media.html
 )
 goto dk_done
@@ -1606,9 +1606,9 @@ if exist "%SystemRoot%\Servicing\Packages\Microsoft-Windows-Server*CorEdition~*.
 if defined a_cor (
 if not exist "!_work!\clipup.exe" (
 %eline%
-echo clipup.exe doesn't exist in Server Cor/Acor [No GUI] version.
-echo It's required for KMS38 Activation.
-echo Check below page on how to activate it.
+echo 服务器Cor/Acor[无GUI]版本中不存在Clipup.exe.
+echo KMS38激活需要它.
+echo 查看下面的页面了解如何激活它.
 echo https://massgrave.dev/kms38.html
 goto dk_done
 )
@@ -1631,7 +1631,7 @@ if not defined osSKU set osSKU=%regSKU%
 
 if not defined osSKU (
 %eline%
-echo SKU value was not detected properly. Aborting...
+echo 未正确检测到SKU值.正在中止...
 goto dk_done
 )
 
@@ -1642,7 +1642,7 @@ set error=
 cls
 echo:
 for /f "skip=2 tokens=2*" %%a in ('reg query "HKLM\SYSTEM\CurrentControlSet\Control\Session Manager\Environment" /v PROCESSOR_ARCHITECTURE') do set arch=%%b
-echo Checking OS Info                        [%winos% ^| %winbuild% ^| %arch%]
+echo 检查操作系统信息                        [%winos% ^| %winbuild% ^| %arch%]
 
 ::========================================================================================================================================
 
@@ -1656,12 +1656,12 @@ if %_WSH% EQU 0 (
 reg add "HKLM\Software\Microsoft\Windows Script Host\Settings" /v Enabled /t REG_DWORD /d 1 /f %nul%
 reg add "HKCU\Software\Microsoft\Windows Script Host\Settings" /v Enabled /t REG_DWORD /d 1 /f %nul%
 if not "%arch%"=="x86" reg add "HKLM\Software\Microsoft\Windows Script Host\Settings" /v Enabled /t REG_DWORD /d 1 /f /reg:32 %nul%
-echo Enabling Windows Script Host            [Successful]
+echo 启用Windows脚本宿主            [成功]
 )
 
 ::========================================================================================================================================
 
-echo Initiating Diagnostic Tests...
+echo 启动诊断测试...
 
 set "_serv=ClipSVC sppsvc KeyIso Winmgmt"
 
@@ -1703,8 +1703,8 @@ call :dk_color %Red% "Checking Alternate Edition For KMS38    [%altedition% Acti
 if not defined key if not defined _gvlk (
 %eline%
 echo [%winos% ^| %winbuild% ^| SKU:%osSKU%]
-echo Unable to find this product in the supported product list.
-echo Make sure you are using updated version of the script.
+echo 在支持的产品列表中找不到该产品.
+echo 确保您使用的是脚本的最新版本.
 echo https://massgrave.dev
 echo:
 goto dk_done
@@ -1724,7 +1724,7 @@ set _partial=
 if not defined key (
 if %_wmic% EQU 1 for /f "tokens=2 delims==" %%# in ('wmic path SoftwareLicensingProduct where "ApplicationID='55c92734-d682-4d71-983e-d6ec3f16059f' and PartialProductKey<>null" Get PartialProductKey /value 2^>nul') do set "_partial=%%#"
 if %_wmic% EQU 0 for /f "tokens=2 delims==" %%# in ('%psc% "(([WMISEARCHER]'SELECT PartialProductKey FROM SoftwareLicensingProduct WHERE ApplicationID=''55c92734-d682-4d71-983e-d6ec3f16059f'' AND PartialProductKey IS NOT NULL').Get()).PartialProductKey | %% {echo ('PartialProductKey='+$_)}" 2^>nul') do set "_partial=%%#"
-call echo Checking Installed Product Key          [Partial Key - %%_partial%%] [Volume:GVLK]
+call echo 检查已安装的产品密钥          [部分密钥 - %%_partial%%] [Volume:GVLK]
 )
 
 set error_code=
@@ -1738,9 +1738,9 @@ if !error_code! NEQ 0 set "error_code=[0x!=ExitCode!]"
 
 if !error_code! EQU 0 (
 call :dk_refresh
-echo Installing KMS Client Setup Key         [%key%] [Successful]
+echo 安装KMS客户端安装密钥         [%key%] [成功]
 ) else (
-call :dk_color %Red% "Installing KMS Client Setup Key         [%key%] [Failed] !error_code!"
+call :dk_color %Red% "Installing KMS Client Setup Key         [%key%] [失败] !error_code!"
 if not defined error (
 call :dk_color %Magenta% "In MAS, Goto Troubleshoot and run Fix Licensing option."
 set showfix=1
@@ -1758,7 +1758,7 @@ if %_wmic% EQU 1 for /f "tokens=2 delims==" %%a in ('"wmic path SoftwareLicensin
 if %_wmic% EQU 0 for /f "tokens=2 delims==" %%a in ('%psc% "(([WMISEARCHER]'SELECT ID FROM SoftwareLicensingProduct WHERE ApplicationID=''55c92734-d682-4d71-983e-d6ec3f16059f'' AND Description like ''%%KMSCLIENT%%'' AND PartialProductKey IS NOT NULL').Get()).ID | %% {echo ('ID='+$_)}" 2^>nul') do call set "app=%%a"
 
 if not defined app (
-call :dk_color %Red% "Checking Installed GVLK Activation ID   [Not Found] Aborting..."
+call :dk_color %Red% "检查已安装的 GVLK激活ID [未找到] 正在中止..."
 goto :dk_done
 )
 
@@ -1781,9 +1781,9 @@ set k_error=
 %nul% reg add "HKLM\%specific_kms%\%app%" /f /v KeyManagementServicePort /t REG_SZ /d "1688" || set k_error=1
 
 if not defined k_error (
-echo Adding Specific KMS Host                [LocalHost 127.0.0.2] [Successful]
+echo 添加特定的 KMS 主机                [LocalHost 127.0.0.2] [成功]
 ) else (
-call :dk_color %Red% "Adding Specific KMS Host                [LocalHost 127.0.0.2] [Failed]"
+call :dk_color %Red% "添加特定的 KMS 主机                [LocalHost 127.0.0.2] [成功]"
 )
 
 ::========================================================================================================================================
@@ -1798,9 +1798,9 @@ popd
 
 echo:
 if exist "!_clipup!" (
-echo Copying clipup.exe File to              [%systemroot%\System32\] [Successful]
+echo 将Clipup.exe文件复制到              [%systemroot%\System32\] [成功]
 ) else (
-call :dk_color %Red% "Copying clipup.exe File to              [%systemroot%\System32\] [Failed] Aborting..."
+call :dk_color %Red% "将Clipup.exe 文件复制到              [%systemroot%\System32\] [失败] 正在中止..."
 goto :k_final
 )
 )
@@ -1829,11 +1829,11 @@ set "sessionId=TwBTAE0AYQBqAG8AcgBWAGUAcgBzAGkAbwBuAD0ANQA7AE8AUwBNAGkAbgBvAHIAV
 copy /y /b "%tdir%\GenuineTicket" "%tdir%\GenuineTicket.xml" %nul%
 
 if not exist "%tdir%\GenuineTicket.xml" (
-call :dk_color %Red% "Generating GenuineTicket.xml            [Failed]"
+call :dk_color %Red% "生成GenuineTicket.xml            [失败]"
 if exist "%tdir%\Genuine*" del /f /q "%tdir%\Genuine*" %nul%
 goto :k_final
 ) else (
-echo Generating GenuineTicket.xml            [Successful]
+echo 生成GenuineTicket.xml            [成功]
 )
 
 set "_xmlexist=if exist "%tdir%\GenuineTicket.xml""
@@ -1845,9 +1845,9 @@ net stop sppsvc /y %nul%
 net stop sppsvc /y %nul%
 
 sc query sppsvc | find /i "1  STOPPED" %nul% && (
-echo Stopping sppsvc Service                 [Successful]
+echo 停止sppsvc服务                 [成功]
 ) || (
-call :dk_color %Red% "Stopping sppsvc Service                 [Failed]"
+call :dk_color %Red% "停止sppsvc服务                 [失败]"
 )
 
 %_xmlexist% (
@@ -1859,7 +1859,7 @@ net start ClipSVC /y %nul%
 %_xmlexist% (
 set error=1
 if exist "%tdir%\*.xml" del /f /q "%tdir%\*.xml" %nul%
-call :dk_color %Red% "Installing GenuineTicket.xml            [Failed With ClipSVC Service Restart, Wait...]"
+call :dk_color %Red% "正在安装GenuineTicket.xml            [ClipSVC 服务重新启动失败，请等待...]"
 )
 )
 
@@ -1877,7 +1877,7 @@ call :dk_color %Red% "Installing GenuineTicket.xml            [Failed With clipu
 if exist "%ProgramData%\Microsoft\Windows\ClipSVC\Install\Migration\*.xml" (
 set error=1
 set rebuildinfo=1
-call :dk_color %Red% "Checking Ticket Migration               [Failed]"
+call :dk_color %Red% "Checking Ticket Migration               [失败]"
 )
 
 if defined applist if not defined showfix if defined rebuildinfo (
@@ -1892,7 +1892,7 @@ if exist "%tdir%\Genuine*" del /f /q "%tdir%\Genuine*" %nul%
 call :dk_product
 
 echo:
-echo Activating...
+echo 激活...
 echo:
 
 call :k_checkexp
@@ -1907,9 +1907,9 @@ if %_wmic% EQU 1 wmic path SoftwareLicensingProduct where ID='%app%' call ReArms
 if %_wmic% EQU 0 %psc% "$null=([WMI]'SoftwareLicensingProduct=''%app%''').ReArmsku()" %nul%
 
 if %errorlevel%==0 (
-echo Applying SKU-ID Rearm                   [Successful]
+echo 应用 SKU-ID 重新配置                   [成功]
 ) else (
-call :dk_color %Red% "Applying SKU-ID Rearm                   [Failed]"
+call :dk_color %Red% "应用 SKU-ID 重新配置                   [失败]"
 )
 call :dk_refresh
 
@@ -1920,9 +1920,9 @@ call :k_actinfo
 goto :k_final
 )
 
-call :dk_color %Red% "Activation Failed"
-if not defined error call :dk_color %Magenta% "In MAS, Goto Troubleshoot and run Fix Licensing option."
-call :dk_color2 %Magenta% "Check this page for help" %_Yellow% " https://massgrave.dev/troubleshoot"
+call :dk_color %Red% "激活失败"
+if not defined error call :dk_color %Magenta% "在MAS中，转至故障排除并运行修复许可选项."
+call :dk_color2 %Magenta% "检查此页面寻求帮助" %_Yellow% " https://massgrave.dev/troubleshoot"
 
 ::========================================================================================================================================
 
@@ -1935,9 +1935,9 @@ if not defined _k38 (
 %nul% reg delete "HKLM\%specific_kms%" /f
 %nul% reg delete "HKU\S-1-5-20\%specific_kms%" /f
 %nul% reg query "HKLM\%specific_kms%" && (
-call :dk_color %Red% "Removing The Added Specific KMS Host    [Failed]"
+call :dk_color %Red% "删除添加的特定KMS主机    [失败]"
 ) || (
-echo Removing The Added Specific KMS Host    [Successful]
+echo 删除添加的特定KMS主机    [成功]
 )
 )
 
@@ -1947,9 +1947,9 @@ if defined _k38 (
 %psc% "$f=[io.file]::ReadAllText('!_batp!') -split ':regdel\:.*';& ([ScriptBlock]::Create($f[1])) -protect;"
 %nul% reg delete "HKLM\%specific_kms%" /f
 %nul% reg query "HKLM\%specific_kms%" && (
-call :dk_color %Magenta% "Protect KMS38 By KMS                    [Successful] [Locked A Registry Key]"
+call :dk_color %Magenta% "通过KMS保护KMS38                    [成功] [锁定注册表项]"
 ) || (
-call :dk_color %Red% "Protect KMS38 By KMS                    [Failed To Lock A Registry Key]"
+call :dk_color %Red% "通过KMS保护KMS38                    [锁定注册表项失败]"
 )
 )
 
@@ -1959,14 +1959,14 @@ if defined a_cor if exist "%_clipup%" del /f /q "%_clipup%" %nul%
 
 if defined a_cor (
 if exist "%_clipup%" (
-call :dk_color %Red% "Deleting copied clipup.exe file         [Failed]"
+call :dk_color %Red% "删除复制的clipup.exe文件         [失败]"
 ) else (
-echo Deleting copied clipup.exe file         [Successful]
+echo 删除复制的clipup.exe文件         [成功]
 )
 )
 
 for %%# in (175 407) do if %osSKU%==%%# (
-call :dk_color %Red% "%winos% does not support activation on non-azure platforms."
+call :dk_color %Red% "%winos% 不支持在非azure平台上激活."
 )
 
 goto :dk_done
@@ -1977,7 +1977,7 @@ goto :dk_done
 
 cls
 mode 99, 28
-title  Remove KMS38 Protection
+title  删除KMS38激活
 
 %nul% reg delete "HKLM\%specific_kms%" /f
 %nul% reg delete "HKU\S-1-5-20\%specific_kms%" /f
@@ -1989,9 +1989,9 @@ title  Remove KMS38 Protection
 
 echo:
 %nul% reg query "HKLM\%specific_kms%" && (
-call :dk_color %Red% "Removing Specific KMS Host              [Failed]"
+call :dk_color %Red% "删除特定的 KMS 主机              [失败]"
 ) || (
-echo Removing Specific KMS Host              [Successful]
+echo 删除特定的 KMS 主机              [成功]
 )
 
 goto :dk_done
@@ -2034,7 +2034,7 @@ $key.SetAccessControl($acl)
 
 set xpr=
 for /f "tokens=* delims=" %%# in ('%psc% "$([DateTime]::Now.addMinutes(%gpr%)).ToString('yyyy-MM-dd HH:mm:ss')" 2^>nul') do set "xpr=%%#"
-call :dk_color %Green% "%winos% is activated till !xpr!"
+call :dk_color %Green% "%winos% 被激活直到 !xpr!"
 exit /b
 
 ::  Check remaining KMS activation grace period
@@ -2217,7 +2217,7 @@ exit /b
 
 cls
 color 07
-title  Online KMS Activation
+title  在线KMS激活
 
 ::  You are not supposed to edit anything below this.
 
@@ -2274,8 +2274,8 @@ if %winbuild% GEQ 10586 reg query "HKCU\Console" /v ForceV2 2>nul | find /i "0x0
 call :_colorprep
 set "_buf={$W=$Host.UI.RawUI.WindowSize;$B=$Host.UI.RawUI.BufferSize;$W.Height=31;$B.Height=300;$Host.UI.RawUI.WindowSize=$W;$Host.UI.RawUI.BufferSize=$B;}"
 
-set "nceline=echo. &echo ==== ERROR ==== &echo."
-set "eline=echo. &call :_color %Red% "==== ERROR ====" &echo."
+set "nceline=echo. &echo ==== 错误 ==== &echo."
+set "eline=echo. &call :_color %Red% "==== 错误 ====" &echo."
 if %_Debug% EQU 1 set _unattended=1
 
 ::========================================================================================================================================
@@ -2297,7 +2297,7 @@ setlocal EnableDelayedExpansion
 
 ::========================================================================================================================================
 
-if %~z0 GEQ 300000 (set "_exitmsg=Go back") else (set "_exitmsg=Exit")
+if %~z0 GEQ 300000 (set "_exitmsg=返回") else (set "_exitmsg=退出")
 
 ::  Check not x86 Windows
 
@@ -2309,16 +2309,16 @@ if /i not "%arch%"=="x86" set notx86=1
 
 for %%# in (wmic.exe) do @if "%%~$PATH:#"=="" (
 %nceline%
-echo Unable to find wmic.exe in the system.
-if %winbuild% GEQ 22621 echo Make sure WMIC is enabled in optional features.
+echo 系统中找不到wmic.exe.
+if %winbuild% GEQ 22621 echo 确保可选功能中启用了 WMIC.
 goto Done
 )
 
 wmic path Win32_ComputerSystem get CreationClassName /value 2>nul | find /i "ComputerSystem" 1>nul || (
 %nceline%
-echo WMI is not responding in the system.
+echo WMI 在系统中没有响应.
 echo:
-echo In MAS, Goto Troubleshoot and run Fix WMI option.
+echo 在MAS中，转到故障排除并运行修复WMI选项.
 goto Done
 )
 
@@ -2344,7 +2344,7 @@ if defined _unattended if not defined _unattendedact goto Done
 
 ::========================================================================================================================================
 
-set "_title=Online KMS Activation"
+set "_title=在线KMS激活"
 set _gui=
 
 :_KMS_Menu
@@ -2385,32 +2385,32 @@ echo.
 echo.
 echo.       ______________________________________________________________
 echo.
-echo.              [1] Activate - Windows
-echo.              [2] Activate - Office
-echo.              [3] Activate - All
+echo.              [1] 激活 - Windows
+echo.              [2] 激活 - Office
+echo.              [3] 激活 - 全部
 echo.
-if defined _tskinstalled call :_color2 %_White% "              [4] Install Auto-Renewal      " %_Green% "[Installed]"
-if defined _oldtsk       call :_color2 %_White% "              [4] Install Auto-Renewal      " %_Red% "[Old Installed]"
-if not defined _tskinstalled if not defined _oldtsk echo.              [4] Install Auto-Renewal
-echo.              [5] Uninstall
+if defined _tskinstalled call :_color2 %_White% "              [4] 安装 自动续订      " %_Green% "[已安装]"
+if defined _oldtsk       call :_color2 %_White% "              [4] 安装 自动续订      " %_Red% "[旧安装]"
+if not defined _tskinstalled if not defined _oldtsk echo.              [4] 安装 自动续订
+echo.              [5] 卸载
 echo.              _______________________________________________  
 echo.
 if %_Debug%==0 (
-echo.              [6] Enable Debug Mode         [No]
+echo.              [6] 启用调试模式         [关闭]
 ) else (
-call :_color2 %_White% "              [6] Enable Debug Mode         " %_Red% "[Yes]"
+call :_color2 %_White% "              [6] 启用调试模式         " %_Red% "[开启]"
 )
 if %vNextOverride% EQU 1 (
 if %sub_next% EQU 1 (
-call :_color2 %_White% "              [7] Override Office vNext     " %_Red% "[Yes]"
+call :_color2 %_White% "              [7] 覆盖Office vNext     " %_Red% "[开启]"
 ) else (
-echo               [7] Override Office vNext     [Yes]
+echo               [7] 覆盖Office vNext     [开启]
 )
 ) else (
 if %sub_next% EQU 1 (
-call :_color2 %_White% "              [7] Override Office vNext     " %_Yellow% "[No]"
+call :_color2 %_White% "              [7] 覆盖Office vNext     " %_Yellow% "[关闭]"
 ) else (
-echo               [7] Override Office vNext     [No]
+echo               [7] 覆盖Office vNext     [关闭]
 )
 )
 echo.              _______________________________________________       
@@ -2418,7 +2418,7 @@ echo.
 echo.              [0] %_exitmsg%
 echo.       ______________________________________________________________
 echo.
-call :_color2 %_White% "           " %_Green% "Enter a menu option in the Keyboard [1,2,3,4,5,6,7,0]"
+call :_color2 %_White% "           " %_Green% "在键盘上输入菜单选项 [1,2,3,4,5,6,7,0]"
 choice /C:12345670 /N
 set _el=%errorlevel%
 
@@ -2439,7 +2439,7 @@ goto _KMS_Menu
 if defined _unattended exit /b
 
 echo.
-echo Press any key to exit...
+echo 按任意键退出...
 pause >nul
 exit /b
 
@@ -2546,7 +2546,7 @@ mode con cols=98 lines=31
 %nul% %psc% "&%_buf%"
 title  %_title%
 ) else (
-title  Online KMS Activation
+title  在线KMS激活
 )
 
 if defined _gui if %_Debug%==1 mode con cols=98 lines=30
@@ -2566,10 +2566,10 @@ if %_Debug% EQU 0 (
   set "_log=!_dsk!\%~n0"
   if %Silent% EQU 0 (
   echo.
-  echo Running in Debug Mode...
-  if not defined _args (echo The window will be closed when finished) else (echo please wait...)
+  echo 在调试模式下运行...
+  if not defined _args (echo 完成后窗口将关闭) else (echo 请稍等...)
   echo.
-  echo Writing debug log to:
+  echo 将调试日志写入:
   echo "!_log!_Debug.log"
   )
   @echo on
@@ -2579,7 +2579,7 @@ if %_Debug% EQU 0 (
 @echo off
 if defined _gui if %_Debug%==1 (
 echo.
-call :_color %_Yellow% "Press any key to go back..."
+call :_color %_Yellow% "按任意键返回..."
 pause >nul
 exit /b
 )
@@ -2593,7 +2593,7 @@ set act_failed=0
 set /a act_attempt=0
 
 echo.
-echo Initializing...
+echo 正在初始化...
 
 :: Check Internet connection. Works even if ICMP echo is disabled.
 
@@ -2609,18 +2609,18 @@ if [%errorlevel%]==[0] goto IntConnected
 
 cls
 if %_Debug%==1 (
-echo Error: Internet is not connected.
+echo 错误：互联网未连接.
 exit /b
 )
 
 if defined _unattended (
 echo.
-call :_color %_Red% "Internet is not connected, continuing the process anyway."
+call :_color %_Red% "互联网未连接，仍然继续进行该过程."
 ) else (
 %eline%
-echo Internet is not connected.
+echo 互联网未连接.
 echo:
-call :_color %_Yellow% "Press any key to go back..."
+call :_color %_Yellow% "按任意键返回..."
 pause >nul
 exit /b
 )
@@ -2748,7 +2748,7 @@ if %_O14MSI% EQU 1 set "_C14R="
 set S_OK=1
 call :RunSPP
 if %ActOffice% NEQ 0 call :RunOSPP
-if %ActOffice% EQU 0 (echo.&echo Office activation is OFF...)
+if %ActOffice% EQU 0 (echo.&echo Office 激活已关闭...)
 
 if exist "!_temp!\crv*.txt" del /f /q "!_temp!\crv*.txt"
 if exist "!_temp!\*chk.txt" del /f /q "!_temp!\*chk.txt"
@@ -2777,13 +2777,13 @@ set "_qr=%_zz1% %spp% %_zz2% %_zz5%Description like '%%KMSCLIENT%%' %_zz6% %_zz3
 %_qr% %_Nul2% | findstr /i Windows %_Nul1% && (set WinVL=1)
 if %WinVL% EQU 0 (
 if %ActWindows% EQU 0 (
-  echo.&echo Windows activation is OFF...
+  echo.&echo Office 激活已关闭...
   ) else (
   if %SSppHook% EQU 0 (
     echo.&echo %_winos% %nKMS%
     if defined _eval echo %nEval%
     ) else (
-    echo.&echo Failed checking KMS Activation ID^(s^) for Windows. &call :CheckWS
+    echo.&echo 无法检查 Windows 的 KMS 激活 ID^(s^). &call :CheckWS
     exit /b
     )
   )
@@ -2822,7 +2822,7 @@ set "_qr=%_zz7% %spp% %_zz2% %_zz5%ApplicationID='%_wApp%' and Description like 
 if %W1nd0ws% EQU 1 if %ActWindows% NEQ 0 for /f "tokens=2 delims==" %%G in ('%_qr%') do (set app=%%G&call :sppchkwin)
 :: set "_qr=%_zz7% %spp% %_zz2% %_zz5%ApplicationID='%_wApp%' and Description like '%%KMSCLIENT%%' %addon% %_zz6% %_zz3% ID %_zz8%"
 :: if %ESU_EDT% EQU 1 if %ActWindows% NEQ 0 for /f "tokens=2 delims==" %%G in ('%_qr%') do (set app=%%G&call :esuchk)
-if %W1nd0ws% EQU 1 if %ActWindows% EQU 0 (echo.&echo Windows activation is OFF...)
+if %W1nd0ws% EQU 1 if %ActWindows% EQU 0 (echo.&echo Windows 激活已关闭...)
 set "_qr=%_zz7% %spp% %_zz2% %_zz5%ApplicationID='%_oApp%' and Description like '%%KMSCLIENT%%' %_zz6% %_zz3% ID %_zz8%"
 if %Off1ce% EQU 1 if %ActOffice% NEQ 0 for /f "tokens=2 delims==" %%G in ('%_qr%') do (set app=%%G&call :sppchkoff 1)
 reg delete "HKLM\%SPPk%" /f /v DisableDnsPublishing %_Null%
@@ -2838,10 +2838,10 @@ if not %xOS%==x86 dir /b "%ProgramW6432%\WindowsApps\Microsoft.Office.Desktop*" 
 rem nothing installed
 if %loc_off21% EQU 0 if %loc_off19% EQU 0 if %loc_off16% EQU 0 if %loc_off15% EQU 0 (
 if %winbuild% GEQ 9200 (
-  if %OffUWP% EQU 0 (echo.&echo No Installed Office 2013-2021 Product Detected...) else (echo.&echo %_mOuwp%)
+  if %OffUWP% EQU 0 (echo.&echo 未检测到已安装的 Office 2013-2021 产品...) else (echo.&echo %_mOuwp%)
   exit /b
   )
-if %winbuild% LSS 9200 (if %loc_off14% EQU 0 (echo.&echo No Installed Office %aword% Product Detected...&exit /b))
+if %winbuild% LSS 9200 (if %loc_off14% EQU 0 (echo.&echo 未检测到已安装的 Office %aword%  检测到的产品...&exit /b))
 )
 if %vNextOverride% EQU 1 if %AutoR2V% EQU 1 (
 set sub_o365=0
@@ -3129,7 +3129,7 @@ cscript //nologo "!_temp!\slmgr.vbs" /xpr %_Nul2% | findstr /i "permanently" %_N
 set "_qr=%_zz7% %spp% %_zz2% %_zz5%ApplicationID='%_wApp%' and LicenseStatus='1' %adoff% %_zz6% %_zz3% Name %_zz8%"
 if %WinPerm% EQU 1 (
 for /f "tokens=2 delims==" %%x in ('%_qr%') do echo Checking: %%x
-echo Product is Permanently Activated.
+echo 产品已永久激活.
 exit /b
 )
 call :insKey
@@ -3183,14 +3183,14 @@ set aC2R19=0
 set aC2R16=0
 set aC2R15=0
 if %winbuild% LSS 9200 (set "aword=2010-2021") else (set "aword=2010")
-if %OsppHook% EQU 0 (echo.&echo No Installed Office %aword% Product Detected...&exit /b)
-if %winbuild% GEQ 9200 if %loc_off14% EQU 0 (echo.&echo No Installed Office %aword% Product Detected...&exit /b)
+if %OsppHook% EQU 0 (echo.&echo 没有安装Office %aword% 检测到的产品...&exit /b)
+if %winbuild% GEQ 9200 if %loc_off14% EQU 0 (echo.&echo 没有安装Office %aword% 检测到的产品...&exit /b)
 set err_offsvc=0
 net start osppsvc /y %_Nul3% || (
 sc start osppsvc %_Nul3%
 if !errorlevel! EQU 1053 set err_offsvc=1
 )
-if %err_offsvc% EQU 1 (echo.&echo Error: osppsvc service is not running...&exit /b)
+if %err_offsvc% EQU 1 (echo.&echo 错误：osppsvc 服务未运行...&exit /b)
 if %winbuild% GEQ 9200 call :oppoff
 if %winbuild% LSS 9200 call :sppoff
 if %Off1ce% EQU 0 exit /b
@@ -3231,18 +3231,18 @@ if /i not "%~3"=="" for /f "tokens=2 delims==" %%A in ('%_qr% %_Nul6%') do set /
 set "_qr=%_zz7% %spp% %_zz2% %_zz5%LicenseFamily='Office%~5'%_zz6% %_zz3% LicenseStatus %_zz8%"
 if /i not "%~5"=="" for /f "tokens=2 delims==" %%A in ('%_qr% %_Nul6%') do set /a ls3=%%A
 if "%ls3%"=="1" (
-echo Checking: %~6
-echo Product is Permanently Activated.
+echo 检查: %~6
+echo 产品已永久激活.
 exit /b
 )
 if "%ls2%"=="1" (
-echo Checking: %~4
-echo Product is Permanently Activated.
+echo 检查: %~4
+echo 产品已永久激活.
 exit /b
 )
 if "%ls%"=="1" (
-echo Checking: %~2
-echo Product is Permanently Activated.
+echo 检查: %~2
+echo 产品已永久激活.
 exit /b
 )
 call :insKey
@@ -3481,18 +3481,18 @@ set S_OK=1
 echo.
 set "_key="
 set "_qr=%_zz7% %spp% %_zz2% %_zz5%ID='%app%'%_zz6% %_zz3% Name %_zz8%"
-if %ESU_ADD% EQU 0 for /f "tokens=2 delims==" %%x in ('%_qr%') do echo Installing Key: %%x
-if %ESU_ADD% EQU 1 for /f "tokens=2 delims==f" %%x in ('%_qr%') do echo Installing Key: %%x
+if %ESU_ADD% EQU 0 for /f "tokens=2 delims==" %%x in ('%_qr%') do echo 安装密钥: %%x
+if %ESU_ADD% EQU 1 for /f "tokens=2 delims==f" %%x in ('%_qr%') do echo 安装密钥: %%x
 set ESU_ADD=0
 call :keys %app%
-if "%_key%"=="" (echo No associated KMS Client key found&exit /b)
+if "%_key%"=="" (echo 未找到关联的 KMS 客户端密钥&exit /b)
 set "_qr=wmic path %sps% where Version='%slsv%' call InstallProductKey ProductKey="%_key%""
 if %WMI_VBS% NEQ 0 set "_qr=%_csp% %sps% "%_key%""
 %_qr% %_Nul3%
 set ERRORCODE=%ERRORLEVEL%
 if %ERRORCODE% NEQ 0 (
 cmd /c exit /b %ERRORCODE%
-echo Failed: 0x!=ExitCode!
+echo 失败: 0x!=ExitCode!
 set S_OK=0
 exit /b
 )
@@ -3512,15 +3512,15 @@ set "_qr=%_zz7% %spp% %_zz2% %_zz5%ID='%app%'%_zz6% %_zz3% Name %_zz8%"
 if %W1nd0ws% EQU 0 if %_officespp% EQU 0 if %sps% EQU SoftwareLicensingService (
 reg add "HKLM\%SPPk%\%_wApp%\%app%" /f /v KeyManagementServiceName /t REG_SZ /d "127.0.0.2" %_Nul3%
 reg add "HKLM\%SPPk%\%_wApp%\%app%" /f /v KeyManagementServicePort /t REG_SZ /d "%KMS_Port%" %_Nul3%
-for /f "tokens=2 delims==" %%x in ('%_qr%') do echo Checking: %%x
-echo Product is KMS 2038 Activated.
+for /f "tokens=2 delims==" %%x in ('%_qr%') do echo 检查: %%x
+echo 产品已激活KMS-至2038年.
 set _keepkms38=1
 exit /b
 )
 set "_qr=%_zz7% %spp% %_zz2% %_zz5%ID='%app%'%_zz6% %_zz3% Name %_zz8%"
 if %act_attempt% LSS 1 (
-if %ESU_ADD% EQU 0 for /f "tokens=2 delims==" %%x in ('%_qr%') do echo Activating: %%x
-if %ESU_ADD% EQU 1 for /f "tokens=2 delims==f" %%x in ('%_qr%') do echo Activating: %%x
+if %ESU_ADD% EQU 0 for /f "tokens=2 delims==" %%x in ('%_qr%') do echo 激活: %%x
+if %ESU_ADD% EQU 1 for /f "tokens=2 delims==f" %%x in ('%_qr%') do echo 激活: %%x
 )
 
 set ESU_ADD=0
@@ -3529,20 +3529,20 @@ if %WMI_VBS% NEQ 0 set "_qr=%_csm% "%spp%.ID='%app%'" Activate"
 %_qr% %_Nul3%
 call set ERRORCODE=%ERRORLEVEL%
 if %act_attempt% LSS 1 if %ERRORCODE% EQU -1073418187 (
-echo Product Activation Failed: 0xC004F035
-if %OSType% EQU Win7 echo Windows 7 cannot be KMS-activated on this computer due to unqualified OEM BIOS.
-echo See Read Me for details.
+echo 产品激活失败: 0xC004F035
+if %OSType% EQU Win7 echo 由于OEM BIOS不合格，Windows 7无法在此计算机上进行KMS激活.
+echo 请查看“Read Me”文件以获取详细信息.
 exit /b
 )
 if %act_attempt% LSS 1 if %ERRORCODE% EQU -1073417728 (
-echo Product Activation Failed: 0xC004F200
-echo Windows needs to rebuild the activation-related files.
-echo See KB2736303 for details.
+echo 产品激活失败: 0xC004F200
+echo Windows需要重建激活相关文件.
+echo 有关详细信息，请参阅 KB2736303.
 exit /b
 )
 if %act_attempt% LSS 1 if %ERRORCODE% EQU -1073422315 (
-echo Product Activation Failed: 0xC004E015
-echo Running slmgr.vbs /rilc to mitigate.
+echo 产品激活失败: 0xC004E015
+echo 运行 slmgr.vbs /rilc 来减轻影响.
 cscript //Nologo //B %SysPath%\slmgr.vbs /rilc
 )
 set gpr=0
@@ -3550,8 +3550,8 @@ set gpr2=0
 set "_qr=%_zz7% %spp% %_zz2% %_zz5%ID='%app%'%_zz6% %_zz3% GracePeriodRemaining %_zz8%"
 for /f "tokens=2 delims==" %%x in ('%_qr%') do (set gpr=%%x&set /a "gpr2=(%%x+1440-1)/1440")
 if %act_attempt% LSS 1 if %ERRORCODE% EQU 0 if %gpr% EQU 0 (
-echo Product Activation succeeded, but Remaining Period failed to increase.
-if %OSType% EQU Win7 echo This could be related to the error described in KB4487266
+echo 产品激活成功，但剩余期限未能增加.
+if %OSType% EQU Win7 echo 这可能与KB4487266中描述的错误有关
 exit /b
 )
 set Act_OK=0
@@ -3561,8 +3561,8 @@ if %gpr% GTR 259200 if %Win10Gov% EQU 1 set Act_OK=1
 if %gpr% EQU 259200 set Act_OK=1
 
 if %ERRORCODE% EQU 0 if %Act_OK% EQU 1 (
-call :_color %_Green% "Product Activation Successful"
-echo Remaining Period: %gpr2% days ^(%gpr% minutes^)
+call :_color %_Green% "产品激活成功"
+echo 剩余时间: %gpr2% 天 ^(%gpr% 分^)
 set /a act_attempt=0
 exit /b
 )
@@ -3586,11 +3586,11 @@ goto :activate
 
 cmd /c exit /b %ERRORCODE%
 if %ERRORCODE% NEQ 0 (
-call :_color %_Red% "Product Activation Failed: 0x!=ExitCode!"
+call :_color %_Red% "产品激活失败: 0x!=ExitCode!"
 ) else (
-call :_color %_Red% "Product Activation Failed"
+call :_color %_Red% "产品激活失败"
 )
-echo Remaining Period: %gpr2% days ^(%gpr% minutes^)
+echo 剩余时间: %gpr2% 天 ^(%gpr% 分^)
 set S_OK=0
 set act_failed=1
 set /a act_attempt=0
@@ -3615,7 +3615,7 @@ call :CheckWS
 if %WMIe% EQU 1 (
 echo.
 echo %_err%
-echo Failed running WMI query check.
+echo 运行 WMI 查询检查失败.
 )
 goto :eof
 
@@ -3626,9 +3626,9 @@ set "_qrs=%_zz1% SoftwareLicensingService %_zz3% Version %_zz4%"
 %_qrs% %_Nul2% | findstr /r "[0-9]*\.[0-9]*\.[0-9]*\.[0-9]*" %_Nul1% || (
   set WMIe=1
   %_qrw% %_Nul2% | find /i "ComputerSystem" %_Nul1% && (
-    echo Error: SPP is not responding
+    echo 错误：SPP 没有响应
     ) || (
-    echo Error: WMI ^& SPP are not responding
+    echo 错误：WMI ^& SPP 没有响应
   )
 )
 goto :eof
@@ -3648,7 +3648,7 @@ set error1=%errorlevel%
 sc query OfficeSvc %_Nul3%
 set error2=%errorlevel%
 if %error1% EQU 1060 if %error2% EQU 1060 (
-echo Error: Office C2R service is not detected
+echo 错误：未检测到 Office C2R 服务
 goto :%_fC2R%
 )
 set _Office16=0
@@ -3666,7 +3666,7 @@ for /f "skip=2 tokens=2*" %%a in ('"reg query HKLM\SOFTWARE\WOW6432Node\Microsof
   set _Office15=1
 )
 if %_Office16% EQU 0 if %_Office15% EQU 0 (
-echo Error: Office C2R InstallPath is not detected
+echo 错误：未检测到 Office C2R 安装路径
 goto :%_fC2R%
 )
 
@@ -3698,13 +3698,13 @@ set "_LicensesPath=%_InstallRoot%\Licenses16"
 set "_Integrator=%_InstallRoot%\integration\integrator.exe"
 for /f "skip=2 tokens=2*" %%a in ('"reg query %_PRIDs% /v ActiveConfiguration" %_Nul6%') do set "_PRIDs=%_PRIDs%\%%b"
 if "%_ProductIds%"=="" (
-if %_Office15% EQU 0 (echo Error: Office C2R ProductIDs are not detected&goto :%_fC2R%) else (goto :Reg15istry)
+if %_Office15% EQU 0 (echo 错误：未检测到 Office C2R 产品 ID&goto :%_fC2R%) else (goto :Reg15istry)
 )
 if not exist "%_LicensesPath%\ProPlus*.xrm-ms" (
-if %_Office15% EQU 0 (echo Error: Office C2R Licenses files are not detected&goto :%_fC2R%) else (goto :Reg15istry)
+if %_Office15% EQU 0 (echo 错误：未检测到 Office C2R 许可证文件&goto :%_fC2R%) else (goto :Reg15istry)
 )
 if not exist "%_Integrator%" (
-if %_Office15% EQU 0 (echo Error: Office C2R Licenses Integrator is not detected&goto :%_fC2R%) else (goto :Reg15istry)
+if %_Office15% EQU 0 (echo 错误：未检测到 Office C2R 许可证集成器&goto :%_fC2R%) else (goto :Reg15istry)
 )
 if exist "%_LicensesPath%\Word2019VL_KMS_Client_AE*.xrm-ms" (set "_tag=2019"&set "_ons= 2019")
 if exist "%_LicensesPath%\Word2021VL_KMS_Client_AE*.xrm-ms" (set _LTSC=1)
@@ -3755,13 +3755,13 @@ if exist "%ProgramFiles%\Microsoft Office\Office15\OSPP.VBS" (
   set "_OSPP15VBS=%ProgramFiles(x86)%\Microsoft Office\Office15\OSPP.VBS"
 )
 if "%_Product15Ids%"=="" (
-if %_Office16% EQU 0 (echo Error: Office 2013 C2R ProductIDs are not detected&goto :%_fC2R%) else (goto :CheckC2R)
+if %_Office16% EQU 0 (echo 错误：未检测到 Office 2013 C2R 产品 ID&goto :%_fC2R%) else (goto :CheckC2R)
 )
 if not exist "%_Licenses15Path%\ProPlus*.xrm-ms" (
-if %_Office16% EQU 0 (echo Error: Office 2013 C2R Licenses files are not detected&goto :%_fC2R%) else (goto :CheckC2R)
+if %_Office16% EQU 0 (echo 错误：未检测到 Office 2013 C2R 许可证文件&goto :%_fC2R%) else (goto :CheckC2R)
 )
 if %winbuild% LSS 9200 if not exist "%_OSPP15VBS%" (
-if %_Office16% EQU 0 (echo Error: Office 2013 C2R Licensing tool OSPP.vbs is not detected&goto :%_fC2R%) else (goto :CheckC2R)
+if %_Office16% EQU 0 (echo 错误：未检测到 Office 2013 C2R 许可工具 OSPP.vbs&goto :%_fC2R%) else (goto :CheckC2R)
 )
 
 :CheckC2R
@@ -3789,7 +3789,7 @@ set "_wmi="
 set "_qr=%_zz7% %_sps% %_zz3% Version %_zz8%"
 for /f "tokens=2 delims==" %%# in ('%_qr%') do set _wmi=%%#
 if "%_wmi%"=="" (
-echo Error: %_sps% WMI version is not detected
+echo 错误: %_sps% 未检测到 WMI 版本
 call :CheckWS
 goto :%_fC2R%
 )
@@ -3902,17 +3902,17 @@ find /i "Office16MondoVL_KMS_Client" "!_temp!\crvVolume.txt" %_Nul1% && (
 if %sub_o365% EQU 1 (
   for %%a in (%_Suites%) do set _%%a=0
 echo.
-echo Microsoft Office is activated with a vNext license.
+echo Microsoft Office使用vNext许可证激活.
 )
 if %sub_proj% EQU 1 (
   for %%a in (%_PrjSKU%) do set _%%a=0
 echo.
-echo Microsoft Project is activated with a vNext license.
+echo Microsoft Project使用vNext许可证激活.
 )
 if %sub_vsio% EQU 1 (
   for %%a in (%_VisSKU%) do set _%%a=0
 echo.
-echo Microsoft Visio is activated with a vNext license.
+echo Microsoft Visio使用vNext许可证激活.
 )
 
 for %%a in (%_RetIds%,ProPlus) do if !_%%a! EQU 1 (
@@ -3920,7 +3920,7 @@ set _C16Msg=1
 )
 if %_C16Msg% EQU 1 (
 echo.
-echo Converting Office C2R Retail-to-Volume:
+echo 将 Office C2R 零售模式转变为批量模式:
 )
 if %_C16Msg% EQU 0 (if %_Office15% EQU 1 (goto :R15V) else (goto :GVLKC2R))
 
@@ -4150,7 +4150,7 @@ set _C15Msg=1
 )
 if %_C15Msg% EQU 1 if %_C16Msg% EQU 0 (
 echo.
-echo Converting Office C2R Retail-to-Volume:
+echo 将 Office C2R零售模式转变为批量模式:
 )
 if %_C15Msg% EQU 0 goto :GVLKC2R
 
@@ -5147,7 +5147,7 @@ if not defined _tskinstalled if not defined _oldtsk (
 echo.
 if %winbuild% GEQ 9200 (
 call :leavenonexistentkms %nul%
-echo Keeping the non-existent IP address 10.0.0.10 as KMS Server.
+echo 保留不存在的IP地址10.0.0.10作为KMS服务器.
 ) else (
 call :Clear-KMS-Cache
 )
@@ -5155,14 +5155,14 @@ call :Clear-KMS-Cache
 
 if not [%Act_OK%]==[1] (
 echo.
-echo In case of any issues, check https://massgrave.dev/troubleshoot
+echo 如有任何问题，请检查 https://massgrave.dev/troubleshoot
 )
 
 if defined _unattended exit /b
 
 echo ____________________________________________________________________
 echo.
-call :_color %_Yellow% "Press any key to go back..."
+call :_color %_Yellow% "按任意键返回..."
 pause >nul
 exit /b
 
@@ -5178,12 +5178,12 @@ for /f "delims=[] tokens=2" %%# in ('ping -n 1 %%a') do (if not [%%#]==[] set _i
 )
 
 if not defined _intcon (
-call :_color %_Red% "Internet is not connected."
+call :_color %_Red% "互联网未连接."
 exit /b
 )
 
 if [%ERRORCODE%]==[-1073418124] (
-echo Checking Port 1688 connection, it may take a while...
+echo 检查1688端口连接，可能需要一段时间...
 echo.
 
 set /a count=0
@@ -5194,24 +5194,24 @@ set /a count+=1
 )
 
 if not defined _portcon (
-call :_color %Red% "Port 1688 is blocked in your Internet connection."
+call :_color %Red% "您的互联网连接中的端口1688被阻止."
 echo.
-echo Reason:   Probably restricted Internet [Office/College] is connected,
-echo           or Firewall is blocking the connection.
+echo 原因：可能是互联网[Office/College]连接受到限制,
+echo           或者防火墙阻止了连接.
 echo.
-echo Solution: Either use another Internet connection or use offline KMS
+echo 解决方案：使用其他互联网连接或使用离线KMS
 echo           https://github.com/abbodi1406/KMS_VL_ALL_AIO
 ) else (
-echo Port 1688 connection test is passed.
+echo 1688端口连接测试通过.
 echo.
-echo Make sure system files are not blocked by your firewall.
-echo If the issue persists, try offline KMS
+echo 确保系统文件未被防火墙阻止.
+echo 如果问题仍然存在，请尝试离线KMS
 echo https://github.com/abbodi1406/KMS_VL_ALL_AIO
 )
 echo.
 )
 
-echo KMS server is not an issue in this case.
+echo 在这种情况下，KMS服务器不是问题所在.
 exit /b
 
 ::========================================================================================================================================
@@ -5290,10 +5290,10 @@ if %winbuild% GEQ 9600 (
 
 %nul% reg query "HKLM\%SPPk%\%_wApp%" && (
 set error_=9
-echo Failed to completely clear KMS Cache.
-reg query "HKLM\%SPPk%\%_wApp%" /s 2>nul | findstr /i "127.0.0.2" >nul && echo KMS38 activation is locked.
+echo 无法完全清除 KMS 缓存.
+reg query "HKLM\%SPPk%\%_wApp%" /s 2>nul | findstr /i "127.0.0.2" >nul && echo KMS38激活被锁定.
 ) || (
-echo Cleared KMS Cache successfully.
+echo 成功清除 KMS 缓存.
 )
 exit /b
 
@@ -5336,7 +5336,7 @@ goto :eof
 
 cls
 mode con: cols=91 lines=30
-title Online KMS Complete Uninstall
+title 在线KMS完全卸载
 
 set "key=HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Schedule\taskcache\tasks"
 
@@ -5347,8 +5347,8 @@ if %winbuild% GEQ 9200 if defined _C16R (
 echo.
 echo ## Notice ##
 echo.
-echo To make sure Office programs do not show a non-genuine banner,
-echo please run the activation option once, and don't uninstall afterward.
+echo 确保 Office程序不会显示非正版横幅,
+echo 请运行一次激活选项，之后不要卸载.
 echo __________________________________________________________________________________________
 )
 
@@ -5361,67 +5361,67 @@ if defined error_ (
 if [%error_%]==[1] (
 echo __________________________________________________________________________________________
 %eline%
-echo Try Again / Restart the System
+echo 重试/重新启动系统
 echo __________________________________________________________________________________________
 )
 ) else (
 echo __________________________________________________________________________________________
 echo.
-call :_color %Green% "Online KMS Complete Uninstall was done successfully."
+call :_color %Green% "在线KMS完全卸载已成功完成."
 echo __________________________________________________________________________________________
 )
 
 if defined _unattended timeout /t 2 & exit /b
 
 echo.
-call :_color %_Yellow% "Press any key to go back..."
+call :_color %_Yellow% "按任意键返回..."
 pause >nul
 exit /b
 
 :clearstuff
 
 reg query "%key%" /f Path /s | find /i "\Activation-Renewal" >nul && (
-echo Deleting [Task] Activation-Renewal
+echo 正在删除[任务] Activation-Renewal
 schtasks /delete /tn Activation-Renewal /f %nul%
 )
 
 reg query "%key%" /f Path /s | find /i "\Activation-Run_Once" >nul && (
-echo Deleting [Task] Activation-Run_Once
+echo 正在删除[任务] Activation-Run_Once
 schtasks /delete /tn Activation-Run_Once /f %nul%
 )
 
 reg query "%key%" /f Path /s | find /i "\Online_KMS_Activation_Script-Renewal" >nul && (
-echo Deleting [Task] Online_KMS_Activation_Script-Renewal
+echo 正在删除[任务] Online_KMS_Activation_Script-Renewal
 schtasks /delete /tn Online_KMS_Activation_Script-Renewal /f %nul%
 )
 
 reg query "%key%" /f Path /s | find /i "\Online_KMS_Activation_Script-Run_Once" >nul && (
-echo Deleting [Task] Online_KMS_Activation_Script-Run_Once
+echo 正在删除[任务] Online_KMS_Activation_Script-Run_Once
 schtasks /delete /tn Online_KMS_Activation_Script-Run_Once /f %nul%
 )
 
 If exist "%windir%\Online_KMS_Activation_Script\" (
-echo Deleting [Folder] %windir%\Online_KMS_Activation_Script\
+echo 正在删除 [文件夹] %windir%\Online_KMS_Activation_Script\
 rmdir /s /q "%windir%\Online_KMS_Activation_Script\" %nul%
 )
 
 if exist "%ProgramData%\Online_KMS_Activation.cmd" (
-echo Deleting [File] %ProgramData%\Online_KMS_Activation.cmd
+echo 正在删除 [文件] %ProgramData%\Online_KMS_Activation.cmd
 del /f /q "%ProgramData%\Online_KMS_Activation.cmd" %nul%
 )
 
 If exist "%ProgramData%\Online_KMS_Activation\" (
-echo Deleting [Folder] %ProgramData%\Online_KMS_Activation\
+echo 正在删除 [文件夹] %ProgramData%\Online_KMS_Activation\
 rmdir /s /q "%ProgramData%\Online_KMS_Activation\" %nul%
 )
 
 If exist "%ProgramData%\Activation-Renewal\" (
-echo Deleting [Folder] %ProgramData%\Activation-Renewal\
+echo 正在删除[文件夹] %ProgramData%\Activation-Renewal\
 rmdir /s /q "%ProgramData%\Activation-Renewal\" %nul%
 )
 
 reg query "HKCR\DesktopBackground\shell\Activate Windows - Office" %nul% && (
-echo Deleting [Registry] HKCR\DesktopBackground\shell\Activate Windows - Office
+echo 删除[注册表] HKCR\DesktopBackground\shell\Activate Windows - Office
 Reg delete "HKCR\DesktopBackground\shell\Activate Windows - Office" /f %nul%
 )
 
@@ -5442,7 +5442,7 @@ exit /b
 
 cls
 mode con cols=91 lines=30
-title  Install Activation Auto-Renewal
+title  安装激活自动续订
 
 set error_=
 set "_dest=%ProgramData%\Activation-Renewal"
@@ -5452,8 +5452,8 @@ call :clearstuff %nul%
 
 if defined error_ (
 %eline%
-echo Failed to completely clear KMS related folders/tasks.
-echo Run the Uninstall option and then try again.
+echo 无法完全清除 KMS 相关文件夹/任务.
+echo 运行卸载选项，然后重试.
 goto :RenDone
 )
 
@@ -5471,7 +5471,7 @@ if exist "%_temp%\.*" rmdir /s /q "%_temp%\" %nul%
 
 call :createInfo.txt
 %nul% %psc% "$f=[io.file]::ReadAllText('!_batp!') -split \":_extracttask\:.*`r`n\"; [io.file]::WriteAllText('%_dest%\Activation_task.cmd', '@REM Dummy ' + '%random%' + [Environment]::NewLine + $f[1].Trim(), [System.Text.Encoding]::ASCII);"
-title  Install Activation Auto-Renewal
+title  安装激活自动续订
 
 ::========================================================================================================================================
 
@@ -5495,33 +5495,33 @@ rmdir /s /q "%_dest%\" %nul%
 )
 
 %eline%
-echo Run the Uninstall option and then try again.
+echo 运行卸载选项，然后重试.
 goto :RenDone
 )
 
 echo __________________________________________________________________________________________
 echo.
-echo Files created:
+echo 创建的文件:
 echo %_dest%\Activation_task.cmd
 echo %_dest%\Info.txt
 echo.
-(if defined ActTask (echo Scheduled Tasks created:) else (echo Scheduled Task created:))
-echo \Activation-Renewal [Weekly]
+(if defined ActTask (echo 已创建计划任务:) else (echo 已创建计划任务:))
+echo \Activation-Renewal [每周]
 if defined ActTask (echo \Activation-Run_Once)
 echo __________________________________________________________________________________________
 echo.
-echo Info:
-echo Activation will be renewed every week if the Internet connection is found.
-echo It'll only renew installed KMS licenses. It won't convert any license to KMS.
+echo 信息:
+echo 如果找到互联网连接，激活将每周更新.
+echo 它只会续订已安装的 KMS 许可证。 它不会将任何许可证转换为 KMS.
 echo __________________________________________________________________________________________
 echo.
 if defined ActTask (
-call :_color %Green% "Renewal and Activation Tasks were successfully created."
+call :_color %Green% "续订和激活任务已成功创建."
 ) else (
-call :_color %Green% "Renewal Task was successfully created."
+call :_color %Green% "续订任务创建成功."
 )
 echo.
-call :_color %Gray% "Make sure you have run the Activation option at least once."
+call :_color %Gray% "确保您至少运行过一次激活选项."
 echo __________________________________________________________________________________________
 )
 
@@ -5532,7 +5532,7 @@ echo ___________________________________________________________________________
 if defined _unattended exit /b
 
 echo.
-call :_color %_Yellow% "Press any key to go back..."
+call :_color %_Yellow% "按任意键返回..."
 pause >nul
 exit /b
 
@@ -5541,25 +5541,25 @@ exit /b
 :createInfo.txt
 
 (
-echo   The use of this script is to renew your Windows/Office KMS license using online KMS.
+echo   该脚本的用途是使用在线 KMS 续订您的 Windows/Office KMS 许可证.
 echo:
-echo   If renewal/activation Scheduled tasks were created then following would exist,
+echo   如果创建了续订/激活计划任务，则将存在以下内容,
 echo:
-echo   - Scheduled tasks
-echo     Activation-Renewal    [Renewal / Weekly]
-echo     Activation-Run_Once   [Activation Task - deletes itself once activated]
-echo     The scheduled tasks runs only if the system is connected to the Internet.
+echo   - 计划任务
+echo     Activation-Renewal    [续订/每周]
+echo     Activation-Run_Once   [激活任务 - 一旦激活就会自行删除]
+echo     仅当系统连接到Internet时才会运行计划任务.
 echo:
-echo   - Files
+echo   - 文件
 echo     C:\ProgramData\Activation-Renewal\Activation_task.cmd
 echo     C:\ProgramData\Activation-Renewal\Info.txt
 echo     C:\ProgramData\Activation-Renewal\Logs.txt
 echo ______________________________________________________________________________________________
 echo:
-echo   Online KMS Activation Script is a part of 'Microsoft_Activation_Scripts' [MAS] project.
+echo   在线KMS激活脚本是“Microsoft_Activation_Scripts”[MAS] 项目的一部分.
 echo:   
-echo   Homepage: mass grave[.]dev
-echo      Email: windowsaddict@protonmail.com
+echo   主页: 资源工坊-www.aopk.cn
+echo      邮箱: aopkcn@qq.com
 )>"%_dest%\Info.txt"
 exit /b
 
@@ -5714,11 +5714,11 @@ exit /b
 
 if not "%~1"=="Task" (
 echo.
-echo ====== Error ======
+echo ====== 错误 ======
 echo.
-echo This file is supposed to be run only by the scheduled task.
+echo 该文件应该仅由计划任务运行.
 echo.
-echo Press any key to exit
+echo 按任意键退出
 pause >nul
 exit /b
 )
@@ -5786,8 +5786,8 @@ goto _taskend
 )
 
 echo.
-echo Error: Internet is not connected
-echo Waiting 30 seconds
+echo 错误：互联网未连接
+echo 等待30秒
 
 timeout /t 30 >nul
 set /a loop=%loop%+1
@@ -5855,7 +5855,7 @@ if %_wmic% EQU 1 wmic path Win32_ComputerSystem get CreationClassName /value 2>n
 if %_wmic% EQU 0 %psc% "Get-CIMInstance -Class Win32_ComputerSystem | Select-Object -Property CreationClassName" 2>nul | find /i "computersystem" 1>nul
 if !errorlevel! NEQ 0 (set e_wmispp=WMI, SPP) else (set e_wmispp=SPP)
 echo.
-echo Error: Not Respoding- !e_wmispp!
+echo 错误：没有响应- !e_wmispp!
 echo.
 )
 
@@ -5870,13 +5870,13 @@ call :_taskgetids osppid %ospp% office
 ::========================================================================================================================================
 
 echo.
-echo Renewing KMS activation for all installed Volume products
+echo 为所有已安装的批量产品续订KMS激活
 
 if not defined sppwid if not defined sppoid if not defined osppid (
 echo.
-echo No installed Volume Windows / Office product found
+echo 未找到已安装的Windows/Office产品
 echo.
-echo Renewing KMS server
+echo 更新KMS服务器
 call :_taskgetserv
 call :_taskregserv
 goto :_skipact
@@ -5916,7 +5916,7 @@ call :_actprod
 call :_act act_win
 call :_actinfo act_win
 ) else (
-echo Checking: Volume version of Windows is not installed
+echo 检查：未安装Windows批量版本
 )
 
 if defined sppoid (
@@ -5943,7 +5943,7 @@ call :_actinfo
 
 if not defined sppoid if not defined osppid (
 echo.
-echo Checking: Volume version of Office is not installed
+echo 检查：未安装 Office批量版本
 )
 
 :_skipact
@@ -5952,7 +5952,7 @@ echo Checking: Volume version of Office is not installed
 
 if defined run_once (
 echo.
-echo Deleting Scheduled Task Activation-Run_Once
+echo 删除定时任务激活- Activation-Run_Once
 schtasks /delete /tn Activation-Run_Once /f %nul%
 )
 
@@ -5961,7 +5961,7 @@ schtasks /delete /tn Activation-Run_Once /f %nul%
 :_taskend
 
 echo.
-echo Exiting
+echo 退出
 echo ______________________________________________________________________
 
 if defined _tserror (exit /b 123456789) else (exit /b 0)
@@ -6020,26 +6020,26 @@ exit /b
 :_actinfo
 
 if [%1]==[act_win] if %_kms38% EQU 1 (
-echo Windows is activated with KMS38
+echo Windows是用KMS38激活的
 exit /b
 )
 
 if %errorcode% EQU 12345 (
-echo Product Activation Failed
-echo Unable to test KMS servers due to restricted or no Internet
+echo 产品激活失败
+echo 由于互联网受限或无互联网，无法测试KMS服务器
 set _tserror=1
 exit /b
 )
 
 if %errorcode% EQU -1073418187 (
-echo Product Activation Failed: 0xC004F035
-if [%1]==[act_win] if %winbuild% LSS 9200 echo Windows 7 cannot be KMS-activated on this computer due to unqualified OEM BIOS
+echo 产品激活失败: 0xC004F035
+if [%1]==[act_win] if %winbuild% LSS 9200 echo 由于OEM BIOS不合格，Windows 7无法在此计算机上进行 KMS激活
 exit /b
 )
 
 if %errorcode% EQU -1073417728 (
-echo Product Activation Failed: 0xC004F200
-echo Windows needs to rebuild the activation-related files.
+echo 产品激活失败: 0xC004F200
+echo Windows需要重建激活相关文件.
 set _tserror=1
 exit /b
 )
@@ -6050,8 +6050,8 @@ call :_taskgetgrace
 set /a "gpr2=(%gpr%+1440-1)/1440"
 
 if %errorcode% EQU 0 if %gpr% EQU 0 (
-echo Product Activation succeeded, but Remaining Period failed to increase.
-if [%1]==[act_win] if %winbuild% LSS 9200 echo This could be related to the error described in KB4487266
+echo 产品激活成功，但剩余期限未能增加.
+if [%1]==[act_win] if %winbuild% LSS 9200 echo 这可能与 KB4487266 中描述的错误有关
 set _tserror=1
 exit /b
 )
@@ -6063,18 +6063,18 @@ if %gpr% GTR 259200 if [%1]==[act_win] call :_taskchkEnterpriseG _actpass
 if %gpr% EQU 259200 set _actpass=0
 
 if %errorcode% EQU 0 if %_actpass% EQU 0 (
-echo Product Activation Successful
-echo Remaining Period: %gpr2% days ^(%gpr% minutes^)
+echo 产品激活成功
+echo 剩余时间: %gpr2% 天 ^(%gpr% 分^)
 exit /b
 )
 
 cmd /c exit /b %errorcode%
 if %errorcode% NEQ 0 (
-echo Product Activation Failed: 0x!=ExitCode!
+echo 产品激活失败: 0x!=ExitCode!
 ) else (
-echo Product Activation Failed
+echo 产品激活失败
 )
-echo Remaining Period: %gpr2% days ^(%gpr% minutes^)
+echo 剩余时间: %gpr2% 天 ^(%gpr% 分^)
 set _tserror=1
 exit /b
 
@@ -6307,7 +6307,7 @@ UninstallLicenses("sppc.dll")
 mode con cols=100 lines=32
 >nul 2>&1 powershell "&{$W=$Host.UI.RawUI.WindowSize;$B=$Host.UI.RawUI.BufferSize;$W.Height=31;$B.Height=300;$Host.UI.RawUI.WindowSize=$W;$Host.UI.RawUI.BufferSize=$B;}"
 color 07
-title Check Activation Status [vbs]
+title 检查激活状态[vbs]
 set "SysPath=%SystemRoot%\System32"
 set "Path=%SystemRoot%\System32;%SystemRoot%\System32\Wbem;%SystemRoot%\System32\WindowsPowerShell\v1.0\"
 if exist "%SystemRoot%\Sysnative\reg.exe" (
@@ -6332,12 +6332,12 @@ if exist "%ProgramFiles%\Microsoft Office\Office15\ospp.vbs" (
 )
 setlocal EnableDelayedExpansion
 echo %line2%
-echo ***                   Windows Status                     ***
+echo ***                   Windows 状态                       ***
 echo %line2%
 pushd "!_utemp!"
 copy /y %SystemRoot%\System32\slmgr.vbs . >nul 2>&1
 net start sppsvc /y >nul 2>&1
-cscript //nologo slmgr.vbs /dli || (echo Error executing slmgr.vbs&del /f /q slmgr.vbs&popd&goto :casVend)
+cscript //nologo slmgr.vbs /dli || (echo 执行slmgr.vbs时出错&del /f /q slmgr.vbs&popd&goto :casVend)
 cscript //nologo slmgr.vbs /xpr
 del /f /q slmgr.vbs >nul 2>&1
 popd
@@ -6351,9 +6351,9 @@ set _sO16vbs=1
 echo.
 echo %line2%
 if %_sO15vbs% EQU 0 (
-echo ***              Office 2016 %_bit%-bit Status               ***
+echo ***              Office 2016 %_bit%-bit 状态             ***
 ) else (
-echo ***               Office 2013/2016 Status                ***
+echo ***               Office 2013/2016 状态                  ***
 )
 echo %line2%
 cscript //nologo "!office!\ospp.vbs" /dstatus
@@ -6366,9 +6366,9 @@ set _sO16vbs=1
 echo.
 echo %line2%
 if %_sO15vbs% EQU 0 (
-echo ***              Office 2016 32-bit Status               ***
+echo ***              Office 2016 32-bit 状态                 ***
 ) else (
-echo ***               Office 2013/2016 Status                ***
+echo ***               Office 2013/2016 状态                  ***
 )
 echo %line2%
 cscript //nologo "!office!\ospp.vbs" /dstatus
@@ -6381,7 +6381,7 @@ for /f "skip=2 tokens=2*" %%a in ('"reg query HKLM\SOFTWARE\Microsoft\Office\15.
 if exist "!office!\ospp.vbs" (
 echo.
 echo %line2%
-echo ***              Office 2013 %_bit%-bit Status               ***
+echo ***              Office 2013 %_bit%-bit 状态             ***
 echo %line2%
 cscript //nologo "!office!\ospp.vbs" /dstatus
 )
@@ -6391,7 +6391,7 @@ for /f "skip=2 tokens=2*" %%a in ('"reg query HKLM\SOFTWARE\Wow6432Node\Microsof
 if exist "!office!\ospp.vbs" (
 echo.
 echo %line2%
-echo ***              Office 2013 32-bit Status               ***
+echo ***              Office 2013 32-bit 状态                 ***
 echo %line2%
 cscript //nologo "!office!\ospp.vbs" /dstatus
 )
@@ -6402,7 +6402,7 @@ for /f "skip=2 tokens=2*" %%a in ('"reg query HKLM\SOFTWARE\Microsoft\Office\14.
 if exist "!office!\ospp.vbs" (
 echo.
 echo %line2%
-echo ***              Office 2010 %_bit%-bit Status               ***
+echo ***              Office 2010 %_bit%-bit 状态             ***
 echo %line2%
 cscript //nologo "!office!\ospp.vbs" /dstatus
 )
@@ -6412,7 +6412,7 @@ for /f "skip=2 tokens=2*" %%a in ('"reg query HKLM\SOFTWARE\Wow6432Node\Microsof
 if exist "!office!\ospp.vbs" (
 echo.
 echo %line2%
-echo ***              Office 2010 32-bit Status               ***
+echo ***              Office 2010 32-bit 状态                 ***
 echo %line2%
 cscript //nologo "!office!\ospp.vbs" /dstatus
 )
@@ -6428,9 +6428,9 @@ set _sO16vbs=1
 echo.
 echo %line2%
 if %_sO15vbs% EQU 0 (
-echo ***              Office 2016-2021 C2R Status             ***
+echo ***              Office 2016-2021 C2R 状态               ***
 ) else (
-echo ***                Office 2013-2021 Status               ***
+echo ***                Office 2013-2021 状态                 ***
 )
 echo %line2%
 cscript //nologo "!office!\ospp.vbs" /dstatus
@@ -6443,9 +6443,9 @@ set _sO16vbs=1
 echo.
 echo %line2%
 if %_sO15vbs% EQU 0 (
-echo ***              Office 2016-2021 C2R Status             ***
+echo ***              Office 2016-2021 C2R 状态               ***
 ) else (
-echo ***                Office 2013-2021 Status               ***
+echo ***                Office 2013-2021 状态                 ***
 )
 echo %line2%
 cscript //nologo "!office!\ospp.vbs" /dstatus
@@ -6467,7 +6467,7 @@ if exist "%ProgramFiles%\Microsoft Office\Office15\ospp.vbs" (
 if exist "!office!\ospp.vbs" (
 echo.
 echo %line2%
-echo ***                Office 2013 C2R Status                ***
+echo ***                Office 2013 C2R 状态                  ***
 echo %line2%
 cscript //nologo "!office!\ospp.vbs" /dstatus
 )
@@ -6486,14 +6486,14 @@ if exist "%ProgramFiles%\Microsoft Office\Office14\ospp.vbs" (
 if exist "!office!\ospp.vbs" (
 echo.
 echo %line2%
-echo ***                Office 2010 C2R Status                ***
+echo ***                Office 2010 C2R 状态                  ***
 echo %line2%
 cscript //nologo "!office!\ospp.vbs" /dstatus
 )
 
 :casVend
 echo.
-call :_color %_Yellow% "Press any key to go back..."
+call :_color %_Yellow% "按任意键返回..."
 pause >nul
 exit /b
 
@@ -6506,7 +6506,7 @@ exit /b
 mode con cols=100 lines=32
 >nul 2>&1 powershell "&{$W=$Host.UI.RawUI.WindowSize;$B=$Host.UI.RawUI.BufferSize;$W.Height=31;$B.Height=300;$Host.UI.RawUI.WindowSize=$W;$Host.UI.RawUI.BufferSize=$B;}"
 color 07
-title Check Activation Status [wmi]
+title 检查激活状态[wmi]
 
 set WMI_VBS=0
 @cls
@@ -6550,11 +6550,11 @@ wmic path Win32_ComputerSystem get CreationClassName /value 2>nul | find /i "Com
 
 if %_cwmi% EQU 0 (
 echo:
-echo Error: WMI is not responding in the system.
+echo 错误：WMI在系统中没有响应.
 echo:
-echo In MAS, Goto Troubleshoot and run Fix WMI option.
+echo 在MAS中，转到故障排除并运行修复 WMI选项.
 echo:
-echo Press any key to go back...
+echo 按任意键返回...
 pause >nul
 exit /b
 )
@@ -6603,11 +6603,11 @@ if %winbuild% LSS 9200 call :casWpkey %ospp% %o15App% osppsvc ospp15
 )
 
 echo %line2%
-echo ***                   Windows Status                     ***
+echo ***                   Windows 状态                       ***
 echo %line2%
 if not defined cW1nd0ws (
 echo.
-echo Error: product key not found.
+echo 错误：找不到产品密钥.
 goto :casWcon
 )
 set winID=1
@@ -6628,7 +6628,7 @@ if defined osppsvc goto :casWospp
 goto :casWend
 )
 echo %line2%
-echo ***                   Office Status                      ***
+echo ***                   Office 状态                        ***
 echo %line2%
 set "_qr=%_zz7% %wspp% %_zz2% %_zz5%ApplicationID='%o15App%' and PartialProductKey is not null%_zz6% %_zz3% ID %_zz8%"
 for /f "tokens=2 delims==" %%# in ('%_qr%') do (
@@ -6695,7 +6695,7 @@ for /f "tokens=* delims=" %%# in ('%_csx% %GracePeriodRemaining%') do set "_xpr=
 )
 if %_gpr% GEQ 1 if %_prsh% EQU 1 if not defined _xpr (
 for /f "tokens=* delims=" %%# in ('%_psc% "$([DateTime]::Now.addMinutes(%GracePeriodRemaining%)).ToString('yyyy-MM-dd HH:mm:ss')" 2^>nul') do set "_xpr=%%#"
-title Check Activation Status [wmi]
+title 检查激活状态[wmi]
 )
 
 if %LicenseStatus% EQU 0 (
@@ -6706,7 +6706,7 @@ if %LicenseStatus% EQU 1 (
 set "License=Licensed"
 set "LicenseMsg="
 if %GracePeriodRemaining% EQU 0 (
-  if %winID% EQU 1 (set "ExpireMsg=The machine is permanently activated.") else (set "ExpireMsg=The product is permanently activated.")
+  if %winID% EQU 1 (set "ExpireMsg=机器永久激活.") else (set "ExpireMsg=产品已永久激活.")
   ) else (
   set "LicenseMsg=%_mTag% activation expiration: %GracePeriodRemaining% minute(s) (%_gpr% day(s))"
   if defined _xpr set "ExpireMsg=%_mTag% activation will expire %_xpr%"
@@ -6775,52 +6775,52 @@ exit /b
 
 :casWout
 echo.
-echo Name: %Name%
-echo Description: %Description%
-echo Activation ID: %ID%
-echo Extended PID: %ProductKeyID%
-if defined ProductKeyChannel echo Product Key Channel: %ProductKeyChannel%
-echo Partial Product Key: %PartialProductKey%
-echo License Status: %License%
+echo 名称: %Name%
+echo 描述: %Description%
+echo 激活 ID: %ID%
+echo 扩展 PID: %ProductKeyID%
+if defined ProductKeyChannel echo 产品主要渠道: %ProductKeyChannel%
+echo 部分产品密钥: %PartialProductKey%
+echo 许可状态: %License%
 if defined LicenseMsg echo %LicenseMsg%
-if not %LicenseStatus%==0 if not %EvaluationEndDate:~0,8%==16010101 echo Evaluation End Date: %EvaluationEndDate:~0,4%-%EvaluationEndDate:~4,2%-%EvaluationEndDate:~6,2% %EvaluationEndDate:~8,2%:%EvaluationEndDate:~10,2% UTC
+if not %LicenseStatus%==0 if not %EvaluationEndDate:~0,8%==16010101 echo 评估终止日期: %EvaluationEndDate:~0,4%-%EvaluationEndDate:~4,2%-%EvaluationEndDate:~6,2% %EvaluationEndDate:~8,2%:%EvaluationEndDate:~10,2% UTC
 if not defined cKmsClient (
 if defined ExpireMsg echo.&echo.    %ExpireMsg%
 exit /b
 )
-if defined VLActivationTypeEnabled echo Configured Activation Type: %VLActivationType%
+if defined VLActivationTypeEnabled echo 配置的激活类型: %VLActivationType%
 echo.
 if not %LicenseStatus%==1 (
-echo Please activate the product in order to update KMS client information values.
+echo 请激活产品以更新 KMS 客户端信息值.
 exit /b
 )
-echo Most recent activation information:
-echo Key Management Service client information
-echo.    Client Machine ID (CMID): %ClientMachineID%
+echo 最近的激活信息:
+echo 密钥管理服务客户信息
+echo.    客户端机器 ID (CMID): %ClientMachineID%
 echo.    %KmsDns%
 echo.    %KmsReg%
-if defined DiscoveredKeyManagementServiceMachineIpAddress echo.    KMS machine IP address: %DiscoveredKeyManagementServiceMachineIpAddress%
-echo.    KMS machine extended PID: %KeyManagementServiceProductKeyID%
-echo.    Activation interval: %VLActivationInterval% minutes
-echo.    Renewal interval: %VLRenewalInterval% minutes
-echo.    KMS host caching: %KeyManagementServiceHostCaching%
-if defined KeyManagementServiceLookupDomain echo.    KMS SRV record lookup domain: %KeyManagementServiceLookupDomain%
+if defined DiscoveredKeyManagementServiceMachineIpAddress echo.    KMS机器IP地址: %DiscoveredKeyManagementServiceMachineIpAddress%
+echo.    KMS机器扩展PID: %KeyManagementServiceProductKeyID%
+echo.    激活间隔: %VLActivationInterval% minutes
+echo.    续订间隔: %VLRenewalInterval% minutes
+echo.    KMS主机缓存: %KeyManagementServiceHostCaching%
+if defined KeyManagementServiceLookupDomain echo.    KMS SRV记录查找域: %KeyManagementServiceLookupDomain%
 if defined ExpireMsg echo.&echo.    %ExpireMsg%
 exit /b
 
 :casWend
 if %_Identity% EQU 1 if %_prsh% EQU 1 (
 echo %line2%
-echo ***                  Office vNext Status                 ***
+echo ***                  Office vNext 状态                   ***
 echo %line2%
 setlocal EnableDelayedExpansion
 %_psc% "$f=[IO.File]::ReadAllText('!_batp!') -split ':vNextDiag\:.*';iex ($f[1])"
-title Check Activation Status [wmi]
+title 检查激活状态[wmi]
 echo %line3%
 echo.
 )
 echo.
-call :_color %_Yellow% "Press any key to go back..."
+call :_color %_Yellow% "按任意键返回..."
 pause >nul
 exit /b
 
@@ -7010,7 +7010,7 @@ PrintLicensesInformation -Mode "Device"
 
 cls
 color 07
-title  Troubleshoot
+title  故障排除
 
 set _elev=
 if /i "%~1"=="-el" set _elev=1
@@ -7027,10 +7027,10 @@ if %winbuild% GEQ 10586 reg query "HKCU\Console" /v ForceV2 2>nul | find /i "0x0
 call :_colorprep
 
 set cbs_log=%SystemRoot%\logs\cbs\cbs.log
-set "nceline=echo: &echo ==== ERROR ==== &echo:"
-set "eline=echo: &call :_color %Red% "==== ERROR ====" &echo:"
+set "nceline=echo: &echo ==== 错误 ==== &echo:"
+set "eline=echo: &call :_color %Red% "==== 错误 ====" &echo:"
 set "line=_________________________________________________________________________________________________"
-if %~z0 GEQ 200000 (set "_exitmsg=Go back") else (set "_exitmsg=Exit")
+if %~z0 GEQ 200000 (set "_exitmsg=返回") else (set "_exitmsg=退出")
 
 ::========================================================================================================================================
 
@@ -7054,7 +7054,7 @@ if not defined desktop for /f "delims=" %%a in ('%psc% "& {write-host $([Environ
 
 if not defined desktop (
 %eline%
-echo Desktop location was not detected, aborting...
+echo 未检测到桌面位置，正在中止...
 goto at_done
 )
 
@@ -7066,7 +7066,7 @@ setlocal EnableDelayedExpansion
 
 cls
 color 07
-title  Troubleshoot
+title  故障排除
 mode con cols=77 lines=30
 
 echo:
@@ -7075,21 +7075,21 @@ echo:
 echo:
 echo:       _______________________________________________________________
 echo:                                                   
-call :_color2 %_White% "             [1] " %_Green% "Help"
+call :_color2 %_White% "             [1] " %_Green% "帮助"
 echo:             ___________________________________________________
 echo:                                                                      
-echo:             [2] Dism RestoreHealth
-echo:             [3] SFC Scannow
+echo:             [2] Dism恢复健康
+echo:             [3] SFC立即扫描
 echo:                                                                      
-echo:             [4] Fix WMI
-echo:             [5] Fix Licensing
-echo:             [6] Fix WPA Registry
+echo:             [4] 修复WMI
+echo:             [5] 修复许可
+echo:             [6] 修复WPA注册表
 echo:             ___________________________________________________
 echo:
 echo:             [0] %_exitmsg%
 echo:       _______________________________________________________________
 echo:          
-call :_color2 %_White% "            " %_Green% "Enter a menu option in the Keyboard :"
+call :_color2 %_White% "            " %_Green% "在键盘上输入菜单选项:"
 choice /C:1234560 /N
 set _erl=%errorlevel%
 
@@ -7108,12 +7108,12 @@ goto :at_menu
 
 cls
 mode 98, 30
-title  Dism /English /Online /Cleanup-Image /RestoreHealth
+title  Dism恢复健康
 
 if %winbuild% LSS 9200 (
 %eline%
-echo Unsupported OS version Detected.
-echo This command is supported only for Windows 8/8.1/10/11 and their Server equivalent.
+echo 检测到不支持的操作系统版本.
+echo 仅 Windows 8/8.1/10/11 及其服务器等效版本支持此命令.
 goto :at_back
 )
 
@@ -7124,25 +7124,25 @@ for /f "delims=[] tokens=2" %%# in ('ping -n 1 %%a') do (if not [%%#]==[] set _i
 
 echo:
 if defined _int (
-echo      Checking Internet Connection  [Connected]
+echo      检查互联网连接 [已连接]
 ) else (
-call :_color2 %_White% "     " %Red% "Checking Internet Connection  [Not connected]"
+call :_color2 %_White% "     " %Red% "检查互联网连接[未连接]"
 )
 
 echo %line%
 echo:
-echo      Dism uses Windows Update to provide the files required to fix corruption.
-echo      This will take 5-15 minutes or more..
+echo      Dism 使用 Windows Update提供修复损坏所需的文件.
+echo      这将需要 5-15 分钟或更长时间..
 echo %line%
 echo:
-echo      Notes:
+echo      注意事项:
 echo:
-call :_color2 %_White% "     - " %Gray% "Make sure the Internet is connected."
-call :_color2 %_White% "     - " %Gray% "Make sure the Windows update is properly working."
+call :_color2 %_White% "     - " %Gray% "确保互联网已连接."
+call :_color2 %_White% "     - " %Gray% "确保Windows更新正常工作."
 echo:
 echo %line%
 echo:
-choice /C:09 /N /M ">    [9] Continue [0] Go back : "
+choice /C:09 /N /M ">    [9] 继续 [0] 返回 : "
 if %errorlevel%==1 goto at_menu
 
 cls
@@ -7155,7 +7155,7 @@ del /s /f /q "%SystemRoot%\logs\cbs\*.*"
 set _time=
 for /f %%a in ('%psc% "Get-Date -format HH_mm_ss"') do set _time=%%a
 echo:
-echo Applying the command,
+echo 应用命令,
 echo dism /english /online /cleanup-image /restorehealth
 echo:
 dism /english /online /cleanup-image /restorehealth /Logpath:"%SystemRoot%\Temp\RHealth_DISM_%_time%.txt" /loglevel:4
@@ -7166,7 +7166,7 @@ copy /y /b "%cbs_log%" "!desktop!\AT_Logs\RHealth_CBS_%_time%.txt" %nul%
 del /f /q "%SystemRoot%\Temp\RHealth_DISM_%_time%.txt" %nul%
 
 echo:
-call :_color %Gray% "CBS and DISM logs are copied to the AT_Logs folder on the dekstop."
+call :_color %Gray% "CBS和DISM日志复制到桌面上的AT_Logs文件夹."
 goto :at_back
 
 ::========================================================================================================================================
@@ -7175,21 +7175,21 @@ goto :at_back
 
 cls
 mode 98, 30
-title  sfc /scannow
+title  SFC立即扫描
 
 echo:
 echo %line%
 echo:    
-echo      System File Checker will repair missing or corrupted system files.
-echo      This will take 10-15 minutes or more..
+echo      系统文件检查器将修复丢失或损坏的系统文件.
+echo      这将需要 10-15 分钟或更长时间...
 echo:
-echo      If SFC could not fix something, then run the command again to see if it may be able 
-echo      to the next time. Sometimes it may take running the sfc /scannow command 3 times
-echo      restarting the PC after each time to completely fix everything that it's able to.
+echo      如果 SFC 无法修复某些问题，请再次运行该命令以查看是否可以 .
+echo      到下一次.有时可能需要运行sfc /scannow 命令3次.
+echo      每次之后重新启动电脑以彻底修复它能够修复的所有问题.
 echo:   
 echo %line%
 echo:
-choice /C:09 /N /M ">    [9] Continue [0] Go back : "
+choice /C:09 /N /M ">    [9] 继续 [0] 返回 : "
 if %errorlevel%==1 goto at_menu
 
 cls
@@ -7201,7 +7201,7 @@ del /s /f /q "%SystemRoot%\logs\cbs\*.*"
 set _time=
 for /f %%a in ('%psc% "Get-Date -format HH_mm_ss"') do set _time=%%a
 echo:
-echo Applying the command,
+echo 应用命令,
 echo sfc /scannow
 echo:
 sfc /scannow
@@ -7211,7 +7211,7 @@ if not exist "!desktop!\AT_Logs\" md "!desktop!\AT_Logs\" %nul%
 copy /y /b "%cbs_log%" "!desktop!\AT_Logs\SFC_CBS_%_time%.txt" %nul%
 
 echo:
-call :_color %Gray% "CBS log is copied to the AT_Logs folder on the dekstop."
+call :_color %Gray% "CBS日志复制到桌面AT_Logs文件夹."
 goto :at_back
 
 ::========================================================================================================================================
@@ -7221,26 +7221,26 @@ goto :at_back
 cls
 mode con cols=115 lines=32
 %nul% %psc% "&{$W=$Host.UI.RawUI.WindowSize;$B=$Host.UI.RawUI.BufferSize;$W.Height=31;$B.Height=200;$Host.UI.RawUI.WindowSize=$W;$Host.UI.RawUI.BufferSize=$B;}"
-title  Fix Licensing ^(ClipSVC ^+ Office vNext ^+ SPP ^+ OSPP^)
+title  修复许可 ^(ClipSVC ^+ Office vNext ^+ SPP ^+ OSPP^)
 
 echo:
 echo %line%
 echo:   
-echo      Notes:
+echo      注意事项:
 echo:
-echo       - It helps in troubleshooting activation issues.
+echo       - 它有助于解决激活问题.
 echo:
-echo       - This option will,
-echo            - Deactivate Windows and Office, you may need to reactivate
-echo            - Clear ClipSVC, Office vNext, SPP and OSPP licenses
-echo            - Fix SPP permissions of tokens folder and registries
-echo            - Trigger the repair option for Office.
+echo       - 该选项将,
+echo            - 停用Windows 和 Office，您可能需要重新激活
+echo            - 清除ClipSVC、Office vNext、SPP和OSPP许可证
+echo            - 修复令牌文件夹和注册表的 SPP 权限
+echo            - 触发Office的修复选项.
 echo:
-call :_color2 %_White% "      - " %Red% "Apply it only when it is necessary."
+call :_color2 %_White% "      - " %Red% "仅在必要时应用."
 echo:
 echo %line%
 echo:
-choice /C:09 /N /M ">    [9] Continue [0] Go back : "
+choice /C:09 /N /M ">    [9] 继续 [0] 返回 : "
 if %errorlevel%==1 goto at_menu
 
 ::========================================================================================================================================
@@ -7253,38 +7253,38 @@ cls
 echo:
 echo %line%
 echo:
-call :_color %Magenta% "Rebuilding ClipSVC Licences"
+call :_color %Magenta% "重建ClipSVC许可证"
 echo:
 
 if %winbuild% LSS 10240 (
-echo ClipSVC Licence rebuilding is supported only on Win 10/11 and Server equivalent.
-echo Skipping...
+echo 仅在 Win10/11和同等服务器上支持 ClipSVC许可证重建.
+echo 跳过...
 goto :cleanvnext
 )
 
 %psc% "(([WMISEARCHER]'SELECT Name FROM SoftwareLicensingProduct WHERE LicenseStatus=1 AND GracePeriodRemaining=0 AND PartialProductKey IS NOT NULL').Get()).Name" 2>nul | findstr /i "Windows" 1>nul && (
-echo Windows is permanently activated.
-echo Skipping rebuilding ClipSVC licences...
+echo Windows 已永久激活.
+echo 正在跳过重建 ClipSVC许可证...
 goto :cleanvnext
 )
 
-echo Stopping ClipSVC service...
+echo 正在停止 ClipSVC服务...
 call :_stopservice ClipSVC
 timeout /t 2 %nul%
 
 echo:
-echo Applying the command to Clean ClipSVC Licences...
+echo 正在将命令应用于清理 ClipSVC许可证...
 echo rundll32 clipc.dll,ClipCleanUpState
 
 rundll32 clipc.dll,ClipCleanUpState
 
 if %winbuild% LEQ 10240 (
-echo [Successful]
+echo [成功]
 ) else (
 if exist "%ProgramData%\Microsoft\Windows\ClipSVC\tokens.dat" (
-call :_color %Red% "[Failed]"
+call :_color %Red% "[失败]"
 ) else (
-echo [Successful]
+echo [成功]
 )
 )
 
@@ -7298,25 +7298,25 @@ reg query "%RegKey%" %nul% && %nul% call :regownstart
 reg delete "%RegKey%" /f %nul% 
 
 echo:
-echo Deleting a Volatile ^& Protected Registry Key...
+echo 正在删除不稳定、受保护的注册表项...
 echo [%RegKey%]
 reg query "%RegKey%" %nul% && (
-call :_color %Red% "[Failed]"
-echo Restart the system, that will delete this registry key automatically.
+call :_color %Red% "[失败]"
+echo 重启系统，会自动删除该注册表项.
 ) || (
-echo [Successful]
+echo [成功]
 )
 
 ::   Clear HWID token related registry to fix activation incase if there is any corruption
 
 echo:
-echo Deleting a IdentityCRL Registry Key...
+echo 正在删除IdentityCRL注册表项...
 echo [%_ident%]
 reg delete "%_ident%" /f %nul%
 reg query "%_ident%" %nul% && (
-call :_color %Red% "[Failed]"
+call :_color %Red% "[失败]"
 ) || (
-echo [Successful]
+echo [成功]
 )
 
 call :_stopservice ClipSVC
@@ -7325,29 +7325,29 @@ call :_stopservice ClipSVC
 
 echo:
 if %winbuild% GTR 10240 (
-echo Deleting Folder %ProgramData%\Microsoft\Windows\ClipSVC\
+echo 删除文件夹 %ProgramData%\Microsoft\Windows\ClipSVC\
 rmdir /s /q "C:\ProgramData\Microsoft\Windows\ClipSvc" %nul%
 
 if exist "%ProgramData%\Microsoft\Windows\ClipSVC\" (
-call :_color %Red% "[Failed]"
+call :_color %Red% "[失败]"
 ) else (
-echo [Successful]
+echo [成功]
 )
 
 echo:
-echo Rebuilding Folder %ProgramData%\Microsoft\Windows\ClipSVC\
+echo 重建文件夹 %ProgramData%\Microsoft\Windows\ClipSVC\
 net start ClipSVC /y %nul%
 timeout /t 3 %nul%
 if not exist "%ProgramData%\Microsoft\Windows\ClipSVC\" timeout /t 5 %nul%
 if not exist "%ProgramData%\Microsoft\Windows\ClipSVC\" (
-call :_color %Red% "[Failed]"
+call :_color %Red% "[失败]"
 ) else (
-echo [Successful]
+echo [成功]
 )
 )
 
 echo:
-echo Restarting [wlidsvc LicenseManager] services...
+echo 正在重新启动[wlidsvc LicenseManager]服务...
 for %%# in (wlidsvc LicenseManager) do (net stop %%# /y %nul% & net start %%# /y %nul%)
 
 ::========================================================================================================================================
@@ -7359,7 +7359,7 @@ for %%# in (wlidsvc LicenseManager) do (net stop %%# /y %nul% & net start %%# /y
 echo:
 echo %line%
 echo:
-call :_color %Magenta% "Clearing Office vNext License"
+call :_color %Magenta% "清除Office vNext许可证"
 echo:
 
 setlocal DisableDelayedExpansion
@@ -7372,23 +7372,23 @@ attrib -R "!_Local!\Microsoft\Office\Licenses" %nul%
 if exist "!ProgramData!\Microsoft\Office\Licenses\" (
 rd /s /q "!ProgramData!\Microsoft\Office\Licenses\" %nul%
 if exist "!ProgramData!\Microsoft\Office\Licenses\" (
-echo Failed To Delete - !ProgramData!\Microsoft\Office\Licenses\
+echo 删除失败 - !ProgramData!\Microsoft\Office\Licenses\
 ) else (
-echo Deleted Folder - !ProgramData!\Microsoft\Office\Licenses\
+echo 已删除的文件夹 - !ProgramData!\Microsoft\Office\Licenses\
 )
 ) else (
-echo Not Found - !ProgramData!\Microsoft\Office\Licenses\
+echo 未找到 - !ProgramData!\Microsoft\Office\Licenses\
 )
 
 if exist "!_Local!\Microsoft\Office\Licenses\" (
 rd /s /q "!_Local!\Microsoft\Office\Licenses\" %nul%
 if exist "!_Local!\Microsoft\Office\Licenses\" (
-echo Failed To Delete - !_Local!\Microsoft\Office\Licenses\
+echo 删除失败 - !_Local!\Microsoft\Office\Licenses\
 ) else (
-echo Deleted Folder - !_Local!\Microsoft\Office\Licenses\
+echo 已删除的文件夹 - !_Local!\Microsoft\Office\Licenses\
 )
 ) else (
-echo Not Found - !_Local!\Microsoft\Office\Licenses\
+echo 未找到 - !_Local!\Microsoft\Office\Licenses\
 )
 
 echo:
@@ -7398,12 +7398,12 @@ HKCU\Software\Microsoft\Office\16.0\Registration
 ) do (
 reg query %%# %nul% && (
 reg delete %%# /f %nul% && (
-echo Deleted Registry - %%#
+echo 已删除注册表 - %%#
 ) || (
-echo Failed to Delete - %%#
+echo 删除失败 - %%#
 )
 ) || (
-echo Not Found Registry - %%#
+echo 未找到注册表 - %%#
 )
 )
 
@@ -7414,15 +7414,15 @@ echo Not Found Registry - %%#
 echo:
 echo %line%
 echo:
-call :_color %Magenta% "Rebuilding SPP Licensing Tokens"
+call :_color %Magenta% "重建SPP许可令牌"
 echo:
 
 call :scandat check
 
 if not defined token (
-call :_color %Red% "tokens.dat file not found."
+call :_color %Red% "tokens.dat文件未找到."
 ) else (
-echo tokens.dat file: [%token%]
+echo tokens.dat文件: [%token%]
 )
 
 if %winbuild% GEQ 14393 (
@@ -7435,8 +7435,8 @@ reg query "HKLM\SYSTEM\WPA\8DEC0AF1-0341-4b93-85CD-72606C2DF94C-7P-%%#" /ve /t R
 
 if defined wpaerror (
 echo:
-echo Checking WPA Registry Keys...
-call :_color %Red% "[Error Found] [Registry Count - !count!]"
+echo 正在检查 WPA注册表项...
+call :_color %Red% "[发现错误] [Registry Count - !count!]"
 )
 )
 
@@ -7448,7 +7448,7 @@ for /f "skip=2 tokens=2*" %%a in ('reg query "HKLM\SOFTWARE\Microsoft\Windows NT
 if %winbuild% GEQ 10240 (
 
 echo:
-echo Checking SPP permission related issues...
+echo 正在检查SPP权限相关问题...
 call :checkperms
 
 if defined permerror (
@@ -7474,17 +7474,17 @@ set "d=!d! Set-Acl -Path '%%A' -AclObject $acl"
 
 call :checkperms
 if defined permerror (
-call :_color %Red% "[Failed To Fix]"
+call :_color %Red% "[修复失败]"
 ) else (
-echo [Successfully Fixed]
+echo [已成功修复]
 )
 ) else (
-echo [Error Not Found]
+echo [未找到错误]
 )
 )
 
 echo:
-echo Stopping sppsvc service...
+echo 正在停止sppsvc服务...
 call :_stopservice sppsvc
 
 echo:
@@ -7493,27 +7493,27 @@ call :scandat check
 
 if defined token (
 echo:
-call :_color %Red% "Failed to delete .dat files."
+call :_color %Red% "无法删除.dat文件."
 echo:
 )
 
 echo:
-echo Reinstalling System Licenses [slmgr /rilc]...
+echo 正在重新安装系统许可证 [slmgr /rilc]...
 cscript //nologo %windir%\system32\slmgr.vbs /rilc %nul%
 if %errorlevel% NEQ 0 cscript //nologo %windir%\system32\slmgr.vbs /rilc %nul%
 if %errorlevel% EQU 0 (
-echo [Successful]
+echo [成功]
 ) else (
-call :_color %Red% "[Failed]"
+call :_color %Red% "[失败]"
 )
 
 call :scandat check
 
 echo:
 if not defined token (
-call :_color %Red% "Failed to rebuilt tokens.dat file."
+call :_color %Red% "无法重建 tokens.dat 文件."
 ) else (
-echo tokens.dat file was rebuilt successfully.
+echo okens.dat 文件已成功重建.
 )
 
 ::========================================================================================================================================
@@ -7523,25 +7523,25 @@ echo tokens.dat file was rebuilt successfully.
 echo:
 echo %line%
 echo:
-call :_color %Magenta% "Rebuilding OSPP Licensing Tokens"
+call :_color %Magenta% "重建 OSPP 许可令牌"
 echo:
 
 sc qc osppsvc %nul% || (
-echo OSPP based Office is not installed
-echo Skipping rebuilding OSPP tokens...
+echo 未安装基于OSPP的Office
+echo 正在跳过重建 OSPP 令牌...
 goto :repairoffice
 )
 
 call :scandatospp check
 
 if not defined token (
-call :_color %Red% "tokens.dat file not found."
+call :_color %Red% "tokens.dat文件未找到."
 ) else (
-echo tokens.dat file: [%token%]
+echo tokens.dat文件: [%token%]
 )
 
 echo:
-echo Stopping osppsvc service...
+echo 正在停止 osppsvc 服务...
 call :_stopservice osppsvc
 
 echo:
@@ -7550,12 +7550,12 @@ call :scandatospp check
 
 if defined token (
 echo:
-call :_color %Red% "Failed to delete .dat files."
+call :_color %Red% "无法删除.dat文件."
 echo:
 )
 
 echo:
-echo Starting osppsvc service to generate tokens.dat
+echo 正在启动osppsvc服务生成tokens.dat
 call :_startservice osppsvc
 call :scandatospp check
 if not defined token (
@@ -7568,9 +7568,9 @@ call :scandatospp check
 
 echo:
 if not defined token (
-call :_color %Red% "Failed to rebuilt tokens.dat file."
+call :_color %Red% "无法重建 tokens.dat 文件."
 ) else (
-echo tokens.dat file was rebuilt successfully.
+echo tokens.dat 文件已成功重建.
 )
 
 ::========================================================================================================================================
@@ -7580,15 +7580,15 @@ echo tokens.dat file was rebuilt successfully.
 echo:
 echo %line%
 echo:
-call :_color %Magenta% "Repairing Office Licenses"
+call :_color %Magenta% "修复Office许可证"
 echo:
 
 for /f "skip=2 tokens=2*" %%a in ('reg query "HKLM\SYSTEM\CurrentControlSet\Control\Session Manager\Environment" /v PROCESSOR_ARCHITECTURE') do set arch=%%b
 
 if /i "%arch%"=="ARM64" (
 echo:
-echo ARM64 Windows Found.
-echo You need to use repair option in Windows settings for Office.
+echo ARM64 Windows已找到.
+echo 您需要在Office的Windows设置中使用修复选项.
 echo:
 start ms-settings:appsfeatures
 goto :repairend
@@ -7629,7 +7629,7 @@ dir /b "%ProgramFiles(x86)%\WindowsApps\Microsoft.Office.Desktop*" %nul% && set 
 )
 
 set /a counter=0
-echo Checking installed Office versions...
+echo 正在检查安装的Office版本...
 echo:
 
 for %%# in (
@@ -7657,29 +7657,29 @@ set /a counter+=1
 
 if %counter% GTR 1 (
 %eline%
-echo Multiple office versions found.
-echo It's recommended to install only one version of office.
+echo 发现多个office版本.
+echo 建议只安装一个版本的office.
 echo ________________________________________________________________
 echo:
 )
 
 if %counter% EQU 0 (
 echo:
-echo Installed Office is not found.
+echo 找不到已安装的Office.
 goto :repairend
 echo:
 ) else (
 echo:
-call :_color %_Yellow% "A Window will popup, in that Window you need to select [Quick] Repair Option..."
-call :_color %_Yellow% "Press any key to continue..."
+call :_color %_Yellow% "将弹出一个窗口，在该窗口中您需要选择[快速]修复选项..."
+call :_color %_Yellow% "按任意键继续..."
 echo:
 pause >nul
 )
 
 if defined uwp16 (
 echo:
-echo Note: Skipping repair for Office 16.0 UWP. 
-echo       You need to use reset option in Windows settings for it.
+echo 注意：跳过Office 16.0 UWP的修复. 
+echo       您需要使用Windows设置中的重置选项.
 echo ________________________________________________________________
 echo:
 start ms-settings:appsfeatures
@@ -7691,8 +7691,8 @@ if defined c2r14_86 set c2r14=1
 
 if defined c2r14 (
 echo:
-echo Note: Skipping repair for Office 14.0 C2R 
-echo       You need to use Repair option in Windows settings for it.
+echo 注意：跳过Office 14.0 C2R的修复
+echo       您需要使用Windows设置中的修复选项.
 echo ________________________________________________________________
 echo:
 start appwiz.cpl
@@ -7715,7 +7715,7 @@ echo:
 echo %line%
 echo:
 echo:
-call :_color %Green% "Finished"
+call :_color %Green% "完成"
 goto :at_back
 
 ::========================================================================================================================================
@@ -7724,24 +7724,24 @@ goto :at_back
 
 cls
 mode 98, 34
-title  Fix WMI
+title  修复WMI
 
 ::  https://techcommunity.microsoft.com/t5/ask-the-performance-team/wmi-repository-corruption-or-not/ba-p/375484
 
 if exist "%SystemRoot%\Servicing\Packages\Microsoft-Windows-Server*Edition~*.mum" (
 %eline%
-echo WMI rebuild is not recommended on Windows Server. Aborting...
+echo 不建议在Windows Server上重建WMI.正在中止..
 goto :at_back
 )
 
 for %%# in (wmic.exe) do @if "%%~$PATH:#"=="" (
 %eline%
-echo wmic.exe file is not found in the system. Aborting...
+echo 系统中未找到 wmic.exe文件.正在中止...
 goto :at_back
 )
 
 echo:
-echo Checking WMI
+echo 检查WMI
 
 set error=
 wmic path Win32_ComputerSystem get CreationClassName /value 2>nul | find /i "computersystem" 1>nul
@@ -7750,90 +7750,90 @@ winmgmt /verifyrepository %nul%
 if %errorlevel% NEQ 0 set error=1
 
 if not defined error (
-echo [Working]
-echo No need to apply this option. Aborting...
+echo [工作中]
+echo 无需应用此选项.正在中止...
 goto :at_back
 )
 
-call :_color %Red% "[Not Responding]"
+call :_color %Red% "[未响应]"
 
 echo:
 sc query Winmgmt %nul% || (
 %eline%
-echo Winmgmt service is not installed. Aborting...
+echo Winmgmt 服务未安装.正在中止...
 goto :at_back
 )
 
-echo Disabling Winmgmt service
+echo 禁用 Winmgmt服务
 sc config Winmgmt start= disabled %nul%
 if %errorlevel% EQU 0 (
-echo [Successful]
+echo [成功]
 ) else (
-call :_color %Red% "[Failed] Aborting..."
+call :_color %Red% "[失败] 正在中止..."
 sc config Winmgmt start= auto %nul%
 goto :at_back
 )
 
 echo:
-echo Stopping Winmgmt service
+echo 停止 Winmgmt服务
 call :_stopservice Winmgmt
 call :_stopservice Winmgmt
 call :_stopservice Winmgmt
 sc query Winmgmt | find /i "1  STOPPED" %nul% && (
-echo [Successful]
+echo [成功]
 ) || (
-call :_color %Red% "[Failed]"
+call :_color %Red% "[失败]"
 echo:
-call :_color %Magenta% "Its recommended to select [Restart] option and then apply Fix WMI option again."
+call :_color %Magenta% "建议选择[重新启动]选项，然后再次应用修复WMI选项."
 echo %line%
 echo:
-choice /C:21 /N /M "> [1] Restart  [2] Revert Back Changes :"
+choice /C:21 /N /M "> [1] 重新启动 [2] 恢复更改:"
 if !errorlevel!==1 (sc config Winmgmt start= auto %nul%&goto :at_back)
 echo:
-echo Restarting...
+echo 正在重启...
 shutdown -t 5 -r
 exit
 )
 
 echo:
-echo Deleting WMI repository
+echo 删除 WMI存储库
 rmdir /s /q "%windir%\System32\wbem\repository\" %nul%
 if exist "%windir%\System32\wbem\repository\" (
-call :_color %Red% "[Failed]"
+call :_color %Red% "[失败]"
 ) else (
-echo [Successful]
+echo [成功]
 )
 
 echo:
-echo Enabling Winmgmt service
+echo 启用 Winmgmt服务
 sc config Winmgmt start= auto %nul%
 if %errorlevel% EQU 0 (
-echo [Successful]
+echo [成功]
 ) else (
-call :_color %Red% "[Failed]"
+call :_color %Red% "[失败]"
 )
 
 wmic path Win32_ComputerSystem get CreationClassName /value 2>nul | find /i "computersystem" 1>nul
 if %errorlevel% EQU 0 (
 echo:
-echo Checking WMI
-call :_color %Green% "[Working]"
+echo 检查 WMI
+call :_color %Green% "[工作中]"
 goto :at_back
 )
 
 echo:
-echo Registering .dll's and Compiling .mof's, .mfl's
+echo 正在注册.dll文件并编译.mof和.mfl文件.
 call :registerobj %nul%
 
 echo:
-echo Checking WMI
+echo 检查 WMI
 wmic path Win32_ComputerSystem get CreationClassName /value 2>nul | find /i "computersystem" 1>nul
 if %errorlevel% NEQ 0 (
-call :_color %Red% "[Not Responding]"
+call :_color %Red% "[未响应]"
 echo:
-echo Run [Dism RestoreHealth] and [SFC Scannow] options and make sure there are no errors.
+echo 运行[Dism RestoreHealth]和[SFC Scannow]选项并确保没有错误.
 ) else (
-call :_color %Green% "[Working]"
+call :_color %Green% "[工作中]"
 )
 
 goto :at_back
@@ -7865,7 +7865,7 @@ exit /b
 echo:
 echo %line%
 echo:
-call :_color %_Yellow% "Press any key to go back..."
+call :_color %_Yellow% "按任意键返回..."
 pause >nul
 goto :at_menu
 
@@ -7874,7 +7874,7 @@ goto :at_menu
 :at_done
 
 echo:
-echo Press any key to %_exitmsg%...
+echo 按任意键%_exitmsg%...
 pause >nul
 exit /b
 
@@ -8004,7 +8004,7 @@ $key.SetAccessControl($acl)
 
 cls
 color 07
-title  Install Windows HWID Key
+title  安装Windows HWID数字密钥
 
 set _args=
 set _elev=
@@ -8043,23 +8043,23 @@ set  "_Green="Black" "Green""
 set "_Yellow="Black" "Yellow""
 )
 
-set "nceline=echo: &echo ==== ERROR ==== &echo:"
-set "eline=echo: &call :dk_color %Red% "==== ERROR ====" &echo:"
+set "nceline=echo: &echo ==== 错误 ==== &echo:"
+set "eline=echo: &call :dk_color %Red% "==== 错误 ====" &echo:"
 set "line=echo ___________________________________________________________________________________________"
-if %~z0 GEQ 200000 (set "_exitmsg=Go back") else (set "_exitmsg=Exit")
+if %~z0 GEQ 200000 (set "_exitmsg=返回") else (set "_exitmsg=退出")
 
 ::========================================================================================================================================
 
 if %winbuild% LSS 10240 (
 %eline%
-echo Unsupported OS version detected.
-echo This option is supported only for Windows 10/11.
+echo 检测到不支持的操作系统版本.
+echo 仅 Windows 10/11支持此选项.
 goto ins_done
 )
 
 if exist "%SystemRoot%\Servicing\Packages\Microsoft-Windows-Server*Edition~*.mum" (
 %eline%
-echo HWID Activation is not supported for Windows Server.
+echo Windows Server不支持HWID激活.
 goto ins_done
 )
 
@@ -8084,7 +8084,7 @@ setlocal EnableDelayedExpansion
 cls
 mode 98, 30
 echo:
-echo Initializing...
+echo 正在初始化...
 call :dk_product
 call :dk_ckeckwmic
 call :dk_actids
@@ -8106,7 +8106,7 @@ if not defined osSKU set osSKU=%regSKU%
 
 if not defined osSKU (
 %eline%
-echo SKU value was not detected properly. Aborting...
+echo 未正确检测到SKU值.正在中止...
 goto ins_done
 )
 
@@ -8126,8 +8126,8 @@ if not defined key call :hwiddata key attempt2
 if not defined key (
 %eline%
 echo [%winos% ^| %winbuild% ^| SKU:%osSKU%]
-echo Unable to find this product in the HWID supported product list.
-echo Make sure you are using updated version of the script.
+echo 在HWID支持的产品列表中找不到此产品.
+echo 确保您使用的是脚本的最新新版本.
 echo https://massgrave.dev
 goto ins_done
 )
@@ -8139,15 +8139,16 @@ if %_unattended%==1 goto insertkey
 cls
 %line%
 echo:
-echo Install [%winos% ^| SKU:%osSKU% ^| %winbuild%] %channel% Key
+echo 安装 [%winos% ^| SKU:%osSKU% ^| %winbuild%] %channel% 密钥
 echo [%key%]
 %line%
 echo:
 if not "%regSKU%"=="%wmiSKU%" (
-echo Note: Difference Found In SKU Value- WMI:%wmiSKU% Reg:%regSKU%
+echo 注意：SKU 值中发现差异 - WMI:%wmiSKU% Reg:%regSKU%
+echo       重启系统以解决此问题
 echo:
 )
-call :dk_color %_Green% "Press [1] to Continue or [0] to %_exitmsg%"
+call :dk_color %_Green% "按 [1] 继续 或 按 [0] %_exitmsg%"
 choice /C:01 /N
 if %errorlevel%==1 exit /b
 
@@ -8173,15 +8174,15 @@ echo [%winos% ^| SKU:%osSKU% ^| %winbuild%]
 if %error_code% EQU 0 (
 call :dk_refresh
 call :dk_channel
-call echo Installing %%_channel%% [%key%]
+call echo 安装中 %%_channel%% [%key%]
 echo:
-call :dk_color %Green% "[Successful]"
+call :dk_color %Green% "[成功]"
 ) else (
-echo Installing [%key%]
+echo 安装中[%key%]
 echo:
-call :dk_color %Red% "[Unsuccessful] %error_code%"
-if defined actidnotfound call :dk_color %Red% "Activation ID not found for this key."
-echo Check this page for help https://massgrave.dev/troubleshoot
+call :dk_color %Red% "[失败] %error_code%"
+if defined actidnotfound call :dk_color %Red% "找不到该密钥的激活ID."
+echo 检查此页面寻求帮助 https://massgrave.dev/troubleshoot
 )
 %line%
 
@@ -8191,7 +8192,7 @@ echo Check this page for help https://massgrave.dev/troubleshoot
 
 echo:
 if %_unattended%==1 timeout /t 2 & exit /b
-call :dk_color %_Yellow% "Press any key to %_exitmsg%..."
+call :dk_color %_Yellow% "按任意键 %_exitmsg%..."
 pause >nul
 exit /b
 
@@ -8206,7 +8207,7 @@ set _stg=0
 
 cls
 color 07
-title  Change Windows Edition
+title  更改Windows版本
 
 set _elev=
 if /i "%~1"=="-el" set _elev=1
@@ -8239,10 +8240,10 @@ set  "_Green="Black" "Green""
 set "_Yellow="Black" "Yellow""
 )
 
-set "nceline=echo: &echo ==== ERROR ==== &echo:"
-set "eline=echo: &call :dk_color %Red% "==== ERROR ====" &echo:"
+set "nceline=echo: &echo ==== 错误 ==== &echo:"
+set "eline=echo: &call :dk_color %Red% "==== 错误 ====" &echo:"
 set "line=echo ___________________________________________________________________________________________"
-if %~z0 GEQ 200000 (set "_exitmsg=Go back") else (set "_exitmsg=Exit")
+if %~z0 GEQ 200000 (set "_exitmsg=返回") else (set "_exitmsg=退出")
 
 ::========================================================================================================================================
 
@@ -8266,7 +8267,7 @@ cls
 mode 98, 30
 
 echo:
-echo Initializing...
+echo 正在初始化...
 echo:
 call :dk_product
 call :dk_ckeckwmic
@@ -8276,8 +8277,8 @@ call :dk_ckeckwmic
 sc start sppsvc %nul%
 if %errorlevel% NEQ 1056 if %errorlevel% NEQ 0 (
 echo:
-echo Error code: %errorlevel%
-call :dk_color %Red% "Failed to start [sppsvc] service, rest of the process may take a long time..."
+echo 错误代码: %errorlevel%
+call :dk_color %Red% "无法启动[sppsvc]服务，该进程的其余部分可能需要很长时间..."
 echo:
 )
 
@@ -8289,9 +8290,9 @@ call :dk_actids
 
 if not defined applist (
 %eline%
-echo Activation IDs not found. Aborting...
+echo 未找到激活ID.正在中止...
 echo:
-echo Check this page for help. https://massgrave.dev/troubleshoot
+echo 检查此页面寻求帮助. https://massgrave.dev/troubleshoot
 goto ced_done
 )
 
@@ -8304,10 +8305,10 @@ if "%osedition%"=="" (
 %eline%
 DISM /English /Online /Get-CurrentEdition %nul%
 cmd /c exit /b !errorlevel!
-echo DISM command failed [Error Code - 0x!=ExitCode!]
-echo OS Edition was not detected properly. Aborting...
+echo DISM 命令失败 [错误代码 - 0x!=ExitCode!]
+echo 未正确检测操作系统版本.正在中止...
 echo:
-echo Check this page for help. https://massgrave.dev/troubleshoot
+echo 检查此页面寻求帮助. https://massgrave.dev/troubleshoot
 goto ced_done
 )
 
@@ -8326,7 +8327,7 @@ if not defined osSKU set osSKU=%regSKU%
 
 if not defined osSKU (
 %eline%
-echo SKU value was not detected properly. Aborting...
+echo 未正确检测到SKU 值.正在中止...
 goto ced_done
 )
 
@@ -8337,7 +8338,7 @@ for /f "skip=2 tokens=2*" %%a in ('reg query "HKLM\SOFTWARE\Microsoft\Windows NT
 
 %psc% $ExecutionContext.SessionState.LanguageMode 2>nul | find /i "Full" 1>nul || (
 %eline%
-echo PowerShell is not responding properly. Aborting...
+echo PowerShell未正确响应.正在中止...
 goto ced_done
 )
 
@@ -8360,8 +8361,8 @@ for /f "tokens=4" %%a in ('%psc% "$f=[io.file]::ReadAllText('!_batp!') -split ':
 for %%# in (99 139 202 203) do if %osSKU%==%%# (
 %eline%
 echo [%winos% ^| SKU:%osSKU% ^| %winbuild%]
-echo It's not recommended to change this installed edition to any other.
-echo Aborting...
+echo 不建议将此安装版本更改为任何其他版本.
+echo 正在中止...
 goto ced_done
 )
 
@@ -8371,15 +8372,15 @@ echo "!_target!" | find /i " %%# " 1>nul || set "_target=!_target! %%# "
 
 if defined _target (
 for %%# in (%_target%) do (
-echo %%# | findstr /i "CountrySpecific CloudEdition" %nul% || (set "_ntarget=!_ntarget! %%#")
+echo %%# | findstr /i "国家特定云版本" %nul% || (set "_ntarget=!_ntarget! %%#")
 )
 )
 
 if not defined _ntarget (
 %line%
 echo:
-call :dk_color %Gray% "Target Edition not found."
-echo Current Edition [%osedition% ^| %winbuild%] can not be changed to any other Edition.
+call :dk_color %Gray% "未找到目标版本."
+echo 当前版本[%osedition% ^| %winbuild%]无法更改为任何其他版本.
 %line%
 goto ced_done
 )
@@ -8398,7 +8399,7 @@ set targetedition=
 
 %line%
 echo:
-call :dk_color %Gray% "You can change the Edition [%osedition%] [%winbuild%] to one of the following."
+call :dk_color %Gray% "您可以将版本[%osedition%][%winbuild%]更改为以下版本之一."
 %line%
 echo:
 
@@ -8422,10 +8423,10 @@ echo:
 echo [0]  %_exitmsg%
 echo:
 if defined note (
-echo Note: CBS Upgrade Method is available for Purple colored editions.
+echo 注意：CBS 升级方法适用于紫色版本.
 echo:
 )
-call :dk_color %_Green% "Enter option number in keyboard, and press "Enter":"
+call :dk_color %_Green% "在键盘上输入选项编号，然后按"回车":"
 set /p inpt=
 if "%inpt%"=="" goto cedmenu2
 if "%inpt%"=="0" exit /b
@@ -8443,17 +8444,17 @@ echo:
 %line%
 echo:
 if exist "%SystemRoot%\Servicing\Packages\Microsoft-Windows-Server*Edition~*.mum" (
-echo  [1] DISM Method             [Recommended]
+echo  [1] DISM 方法         [推荐]
 ) else (
-echo  [1] Changepk Method         [Recommended]
+echo  [1] 更改密钥 方法     [推荐]
 )
 echo:
-echo  [2] CBS Upgrade Method      [Alternative]
+echo  [2] CBS 升级方法      [备选]
 echo:
-echo  [0] Go back
+echo  [0] 返回
 %line%
 echo:
-echo  Enter a menu option in the Keyboard:
+echo  在键盘上输入菜单选项:
 choice /C:120 /N
 set _el=!errorlevel!
 if !_el!==3 goto :cedmenu2
@@ -8506,8 +8507,8 @@ if not defined key call :changeeditiondata
 if not defined key (
 %eline%
 echo [%targetedition% ^| %winbuild%]
-echo Unable to get product key from pkeyhelper.dll
-echo Make sure you are using updated version of the script.
+echo 无法从 pkeyhelper.dll获取产品密钥
+echo 确保您使用的是脚本的最新版本.
 echo https://massgrave.dev
 goto ced_done
 )
@@ -8523,8 +8524,8 @@ cls
 if %_changepk%==1 (
 echo "%_chan%" | find /i "OEM" >NUL && (
 %eline%
-echo [%osedition%] can not be changed to [%targetedition%] Edition due to lack of non OEM keys.
-echo Non-OEM keys are required to change from Core to Non-Core Editions.
+echo 由于缺少非OEM密钥，无法将[%osedition%]更改为[%targetedition%]版本.
+echo 从核心版本更改为非核心版本需要非 OEM 密钥.
 goto ced_done
 )
 )
@@ -8538,7 +8539,7 @@ for /f "delims=[] tokens=2" %%# in ('ping -n 1 %%a') do (
 if not [%%#]==[] (
 %eline%
 echo Internet needs to be disconnected to change edition [%osedition%] to [%targetedition%]
-echo Disconnect the Internet and then press any key...
+echo 断开互联网连接，然后按任意键...
 pause >nul
 goto ced_loop
 )
@@ -8547,28 +8548,28 @@ goto ced_loop
 )
 
 echo:
-echo Changing the Current Edition [%osedition%] to [%targetedition%]
+echo 将当前版本 [%osedition%]更改为[%targetedition%]
 echo:
 
 if %_changepk%==1 (
 call :dk_color %Magenta% "Notes-"
 echo:
-echo  - You can safely ignore if error appears in the upgrade Window,
-echo    but in that case you must manually reboot the system.
+echo  - 如果升级Windows中出现错误，您可以安全地忽略,
+echo    但在这种情况下您必须手动重新启动系统.
 echo:
-echo  - Save your work before continue, system will auto restart.
-echo  - You can connect to Internet after the system restart.
+echo  - 在继续之前保存您的工作，系统将自动重新启动.
+echo  - 系统重启后即可连接互联网.
 echo:
-echo  - You will need to activate with HWID option once the edition is changed.
+echo  - 版本更改后，您需要使用 HWID选项激活.
 echo:
-choice /C:21 /N /M "[1] Continue [2] %_exitmsg% : "
+choice /C:21 /N /M "[1] 继续 [2] %_exitmsg% : "
 if !errorlevel!==1 exit /b
 )
 
 ::========================================================================================================================================
 
 if %_changepk%==0 (
-echo Installing %_chan% Key [%key%]
+echo 正在安装 %_chan% 密钥 [%key%]
 echo:
 if %_wmic% EQU 1 wmic path SoftwareLicensingService where __CLASS='SoftwareLicensingService' call InstallProductKey ProductKey="%key%" %nul%
 if %_wmic% EQU 0 %psc% "(([WMISEARCHER]'SELECT Version FROM SoftwareLicensingService').Get()).InstallProductKey('%key%')" %nul%
@@ -8580,17 +8581,17 @@ if !error_code! NEQ 0 set "error_code=[0x!=ExitCode!]"
 
 if !error_code! EQU 0 (
 call :dk_refresh
-call :dk_color %Green% "[Successful]"
+call :dk_color %Green% "[成功]"
 echo:
-call :dk_color %Gray% "Reboot is required to properly change the Edition."
+call :dk_color %Gray% "需要重新启动才能正确更改版本."
 ) else (
-call :dk_color %Red% "[Unsuccessful] [Error Code: 0x!=ExitCode!]"
+call :dk_color %Red% "[失败] [错误代码: 0x!=ExitCode!]"
 )
 )
 
 if %_changepk%==1 (
 echo:
-echo Applying the command with %_chan% Key
+echo 使用%_chan%密钥应用命令
 echo start changepk.exe /ProductKey %key%
 start changepk.exe /ProductKey %key%
 )
@@ -8607,16 +8608,16 @@ mode con cols=105 lines=32
 %nul% %psc% "&{$W=$Host.UI.RawUI.WindowSize;$B=$Host.UI.RawUI.BufferSize;$W.Height=31;$B.Height=200;$Host.UI.RawUI.WindowSize=$W;$Host.UI.RawUI.BufferSize=$B;}"
 
 echo:
-echo Changing the Current Edition [%osedition%] to [%targetedition%]
+echo 将当前版本[%osedition%]更改为[%targetedition%]
 echo:
-call :dk_color %Magenta% "Important - Save your work before continue, system will auto reboot."
-if %winbuild% GEQ 17034 if %targetedition%==Professional echo           - Enterprise Key will be installed instead of Pro, you can quickly change to Pro later. 
+call :dk_color %Magenta% "重要 - 在继续之前保存您的工作，系统将自动重新启动。"
+if %winbuild% GEQ 17034 if %targetedition%==Professional echo           - 将安装企业版密钥而不是专业版，您可以稍后快速更改为专业版. 
 echo:
 choice /C:01 /N /M "[1] Continue [0] %_exitmsg% : "
 if %errorlevel%==1 exit /b
 
 echo:
-echo Initializing...
+echo 正在初始化...
 echo:
 
 if %_stg%==0 (set stage=) else (set stage=-StageCurrent)
@@ -8646,8 +8647,8 @@ if defined key if not defined pkeychannel call :dk_pkeychannel %key%
 if not defined key (
 %eline%
 echo [%targetedition% ^| %winbuild%]
-echo Unable to get product key from pkeyhelper.dll
-echo Make sure you are using updated version of the script.
+echo 无法从pkeyhelper.dll获取产品密钥.
+echo 确保您使用的是脚本的最新版本.
 echo https://massgrave.dev
 goto ced_done
 )
@@ -8656,20 +8657,20 @@ goto ced_done
 
 cls
 echo:
-echo Changing the Current Edition [%osedition%] to [%targetedition%]
+echo 将当前版本[%osedition%]更改为[%targetedition%]
 echo:
-echo Applying the command with %pkeychannel% Key
-echo DISM /online /Set-Edition:%targetedition% /ProductKey:%key% /AcceptEula
-DISM /online /Set-Edition:%targetedition% /ProductKey:%key% /AcceptEula
+echo 使用%pkeychannel%密钥应用命令
+echo DISM/在线/套装版:%targetedition% /产品密钥:%key% /AcceptEula
+DISM /online /Set-Edition:%targetedition% /产品密钥:%key% /AcceptEula
 
-call :dk_color %Magenta% "Make sure to restart the system."
+call :dk_color %Magenta% "请务必重新启动系统."
 
 ::========================================================================================================================================
 
 :ced_done
 
 echo:
-call :dk_color %_Yellow% "Press any key to %_exitmsg%..."
+call :dk_color %_Yellow% "按任意键 %_exitmsg%..."
 pause >nul
 exit /b
 
@@ -8801,14 +8802,14 @@ function Write-UpgradeCandidates {
     )
 
     $editionCount = 0
-    Write-Host 'Editions that can be upgraded to:'
+    Write-Host '可升级到的版本:'
     foreach($candidate in $InstallCandidates.Keys) {
-        Write-Host "Target Edition : $candidate"
+        Write-Host "目标版本 : $candidate"
         $editionCount++
     }
 
     if($editionCount -eq 0) {
-        Write-Host '(no editions are available)'
+        Write-Host '(没有可用的版本)'
     }
 }
 
@@ -8887,7 +8888,7 @@ if($getTargetsParam) {
 }
 
 if($false -eq ($installCandidates.Keys -contains $SetEdition)) {
-    Write-Error "The system cannot be upgraded to `"$SetEdition`""
+    Write-Error "系统无法升级到 `"$SetEdition`""
     Exit 1
 }
 
@@ -8899,10 +8900,10 @@ Write-UpgradeXml -RemovalCandidates $removalCandidates `
 
 $editionXml = Find-EditionXml -Edition $SetEdition
 if($null -eq $editionXml) {
-    Write-Warning 'Unable to find edition specific settings XML. Proceeding without it...'
+    Write-Warning '无法找到特定于版本的设置XML.没有它就继续...'
 }
 
-Write-Host 'Starting the upgrade process. This may take a while...'
+Write-Host '启动升级进程.这可能需要一些时间...'
 
 DISM.EXE /English /NoRestart /Online /Apply-Unattend:$xmlPath
 $dismError = $LASTEXITCODE
@@ -8910,7 +8911,7 @@ $dismError = $LASTEXITCODE
 Remove-Item -Path $xmlPath -Force
 
 if(($dismError -ne 0) -and ($dismError -ne 3010)) {
-    Write-Error 'Failed to upgrade to the target edition'
+    Write-Error '无法升级到目标版本'
     Exit $dismError
 }
 
@@ -8922,7 +8923,7 @@ if($null -ne $editionXml) {
     $dismError = $LASTEXITCODE
 
     if(($dismError -ne 0) -and ($dismError -ne 3010)) {
-        Write-Error 'Failed to apply edition specific settings'
+        Write-Error '无法应用版本特定设置'
         Exit $dismError
     }
 }
@@ -9032,7 +9033,8 @@ exit /b
 :MASend
 echo:
 if defined _MASunattended timeout /t 2 & exit /b
-echo Press any key to exit...
+echo 谢谢使用-资源工坊中文版(https://www.aopk.cn)
+echo 按任意键退出...
 pause >nul
 exit /b
 
