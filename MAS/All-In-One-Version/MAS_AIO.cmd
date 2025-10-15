@@ -1,6 +1,6 @@
 @setlocal DisableDelayedExpansion
 @echo off
-
+C:\Windows\System32\chcp.com 65001 >nul
 ::  For command line switches, check https://massgrave.dev/command_line_switches.html
 ::  If you want to better understand script, read from MAS separate files version. 
 
@@ -9039,3 +9039,4 @@ pause >nul
 exit /b
 
 ::End::
+
